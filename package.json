@@ -1,6 +1,6 @@
 {
   "name": "imeandcursor",
-  "displayName": "imeandcursor",
+  "displayName": "IME and Cursor",
   "description": "",
   "version": "0.0.1",
   "engines": {
@@ -9,15 +9,56 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
   "main": "./out/extension.js",
+  "activationEvents": [
+    "onCommand:imeandcursor.switch",
+    "*"
+  ],
   "contributes": {
     "commands": [
       {
-        "command": "imeandcursor.helloWorld",
-        "title": "Hello World"
+        "command": "imeandcursor.switch",
+        "title": "切换输入法-中/英"
       }
-    ]
+    ],
+    "keybindings":[
+      {
+        "command": "imeandcursor.switch",
+        "key": "shift+enter"
+      }
+    ],
+    "configuration":{
+      "title": "IME and Cursor",
+      "properties": {
+        "imeandcursor.switcherLocation": {
+          "type":"string",
+          "default":"",
+          "description": "第三方输入法切换工具的绝对路径"
+        },
+        "imeandcursor.cursorStyle.English": {
+          "type":"string",
+          "default": "line",
+          "enum":["line","block","underline","line-thin","block-outline","underline-thin"],
+          "description": "英文输入法状态下的光标样式"
+        },
+        "imeandcursor.cursorStyle.Chinese": {
+          "type":"string",
+          "default": "block-outline",
+          "enum":["line","block","underline","line-thin","block-outline","underline-thin"],
+          "description": "中文输入法状态下的光标样式"
+        },
+        "imeandcursor.cursorColor.English": {
+          "type":"string",
+          "default": "#00FF00",
+          "description": "英文输入法状态下的光标十六进制(#RGB、#RGBA、#RRGGBB 或 #RRGGBBAA)颜色"
+        },
+        "imeandcursor.cursorColor.Chinese": {
+          "type":"string",
+          "default": "#FF0000",
+          "description": "中文输入法状态下的光标十六进制(#RGB、#RGBA、#RRGGBB 或 #RRGGBBAA)颜色"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
