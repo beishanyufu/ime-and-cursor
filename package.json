@@ -24,16 +24,39 @@
     "keybindings":[
       {
         "command": "imeandcursor.switch",
-        "key": "shift+enter"
+        "key": "shift+space"
       }
     ],
     "configuration":{
       "title": "IME and Cursor",
       "properties": {
-        "imeandcursor.switcherLocation": {
-          "type":"string",
-          "default":"",
-          "description": "第三方输入法切换工具的绝对路径"
+        "imeandcursor.EnglishIM": {
+          "order": 1,
+          "type": "string",
+          "markdownDescription": "你的英语输入法ID。请参考：[这里](https://github.com/)",
+          "default": "1033",
+          "scope": "machine"
+        },
+        "imeandcursor.ChineseIM": {
+          "order": 0,
+          "type": "string",
+          "markdownDescription": "你的中文输入法ID。请参考：[这里](https://github.com/)",
+          "default": "2052",
+          "scope": "machine"
+        },
+        "imeandcursor.switchIMCmd": {
+          "order": 3,
+          "type": "string",
+          "description": "用于切换输入法的cmd/shell命令，{im}用作输入法ID的占位符",
+          "default": "/path/to/im-select {im}",
+          "scope": "machine"
+        },
+        "imeandcursor.obtainIMCmd": {
+          "order": 2,
+          "type": "string",
+          "description": "用于获取输入法ID的cmd/shell命令",
+          "default": "/path/to/im-select",
+          "scope": "machine"
         },
         "imeandcursor.cursorStyle.English": {
           "type":"string",
