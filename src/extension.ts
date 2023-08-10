@@ -9,61 +9,78 @@ const defaultSwitchIMCmd = defaultObtainIMCmd + ' {im}';
 const defaultEnglishIM = '1033';
 const defaultChineseIM = '2052';
 
-// const cursorStyles:{ [key: string]: vscode.TextEditorCursorStyle } = {
-// 	line: vscode.TextEditorCursorStyle['Line'],
-// 	block: vscode.TextEditorCursorStyle.Block,
-// 	underline: vscode.TextEditorCursorStyle.Underline,
-// 	'line-thin': vscode.TextEditorCursorStyle.LineThin,
-// 	'block-outline': vscode.TextEditorCursorStyle.BlockOutline,
-// 	'underline-thin': vscode.TextEditorCursorStyle.UnderlineThin,
-// };
-
 // type CS = 'Line'|'Block'|'Underline'|'LineThin'|'BlockOutline'|'UnderlineThin';  // 或
 type CS = keyof typeof vscode.TextEditorCursorStyle;
 
-
 const out = vscode.window.createOutputChannel('imeandcursor', { log: true });
 
+let csEnglish: CS;
+let csChinese: CS;
+let EnglishIM: string;
+let ChineseIM: string;
+let obtainIMCmd: string;
+let switchIMCmd: string;
 
-function getCursorStyleEnglish() {
-	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.English");
-}
-function getCursorStyleChinese() {
-	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.Chinese");
-}
-function getCursorColorEnglish() {
-	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorColor.English");
-}
-function getCursorColorChinese() {
-	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorColor.Chinese");
-}
-function getEnglishIM() {
-	let EnglishIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("EnglishIM")?.trim();
+// function getCursorStyleEnglish() {
+// 	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.English");
+// }
+// function getCursorStyleChinese() {
+// 	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.Chinese");
+// }
+// function getCursorColorEnglish() {
+// 	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorColor.English");
+// }
+// function getCursorColorChinese() {
+// 	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorColor.Chinese");
+// }
+// function getEnglishIM() {
+// 	let EnglishIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("EnglishIM")?.trim();
+// 	if (!EnglishIM) {
+// 		EnglishIM = defaultEnglishIM;
+// 	}
+// 	return EnglishIM;
+// }
+// function getChineseIM() {
+// 	let ChineseIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("ChineseIM")?.trim();
+// 	if (!ChineseIM) {
+// 		ChineseIM = defaultChineseIM;
+// 	}
+// 	return ChineseIM;
+// }
+// function getSwitchIMCmd() {
+// 	let switchIMCmd = vscode.workspace.getConfiguration("imeandcursor").get<string>("switchIMCmd");
+// 	if (switchIMCmd === '/path/to/im-select {im}' || !switchIMCmd) {
+// 		switchIMCmd = defaultSwitchIMCmd;
+// 	}
+// 	return switchIMCmd;
+// }
+// function getObtainIMCmd() {
+// 	let obtainIMCmd = vscode.workspace.getConfiguration("imeandcursor").get<string>("obtainIMCmd");
+// 	if (obtainIMCmd === '/path/to/im-select' || !obtainIMCmd) {
+// 		obtainIMCmd = defaultObtainIMCmd;
+// 	}
+// 	return obtainIMCmd;
+// }
+
+function getConfiguration() {
+	csChinese = vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.Chinese") as CS;
+	csEnglish = vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.English") as CS;
+	EnglishIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("EnglishIM")?.trim() as string;
 	if (!EnglishIM) {
 		EnglishIM = defaultEnglishIM;
 	}
-	return EnglishIM;
-}
-function getChineseIM() {
-	let ChineseIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("ChineseIM")?.trim();
+	ChineseIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("ChineseIM")?.trim() as string;
 	if (!ChineseIM) {
 		ChineseIM = defaultChineseIM;
 	}
-	return ChineseIM;
-}
-function getSwitchIMCmd() {
-	let switchIMCmd = vscode.workspace.getConfiguration("imeandcursor").get<string>("switchIMCmd");
-	if (switchIMCmd === '/path/to/im-select {im}' || !switchIMCmd) {
-		switchIMCmd = defaultSwitchIMCmd;
-	}
-	return switchIMCmd;
-}
-function getObtainIMCmd() {
-	let obtainIMCmd = vscode.workspace.getConfiguration("imeandcursor").get<string>("obtainIMCmd");
+	obtainIMCmd = vscode.workspace.getConfiguration("imeandcursor").get<string>("obtainIMCmd") as string;
 	if (obtainIMCmd === '/path/to/im-select' || !obtainIMCmd) {
 		obtainIMCmd = defaultObtainIMCmd;
 	}
-	return obtainIMCmd;
+	switchIMCmd = vscode.workspace.getConfiguration("imeandcursor").get<string>("switchIMCmd") as string;
+	if (switchIMCmd === '/path/to/im-select {im}' || !switchIMCmd) {
+		switchIMCmd = defaultSwitchIMCmd;
+	}
 }
 
 function execCmd(cmd: string): Promise<string> {
@@ -80,7 +97,7 @@ function execCmd(cmd: string): Promise<string> {
 
 async function obtainIM() {
 	try {
-		let IM = await execCmd(getObtainIMCmd());
+		let IM = await execCmd(obtainIMCmd);
 		// console.log(IM.trim());
 		return IM.trim();
 	} catch (e) {
@@ -91,50 +108,29 @@ async function obtainIM() {
 }
 
 async function switchIM(currentIM: string) {
-	let targetIM = getEnglishIM();
-	if (currentIM === targetIM) {
-		targetIM = getChineseIM();
-	}
+	const targetIM = currentIM === EnglishIM ? ChineseIM : EnglishIM;
 	try {
-		await execCmd(getSwitchIMCmd().replace('{im}', targetIM));
+		await execCmd(switchIMCmd.replace('{im}', targetIM));
 	} catch (e) {
 		vscode.window.showInformationMessage("切换输入法失败，请检查是否正确设置了“SwitchIMCmd”。");
 		throw (e);
 	}
 }
 
-// function setCursorOld(currentIM: string) {
-// 	let EnglishIM = getEnglishIM();
-// 	let ChineseIM = getChineseIM();
-// 	switch (currentIM) {
-// 		case EnglishIM:
-// 			vscode.workspace.getConfiguration("editor").update('cursorStyle', getCursorStyleEnglish() as string, vscode.ConfigurationTarget.Global);
-// 			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": getCursorColorEnglish() as string }, vscode.ConfigurationTarget.Global);
-// 			break;
-// 		case ChineseIM:
-// 			vscode.workspace.getConfiguration("editor").update("cursorStyle", getCursorStyleChinese() as string, vscode.ConfigurationTarget.Global);
-// 			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": getCursorColorChinese() as string }, vscode.ConfigurationTarget.Global);
-// 			break;
-// 		default:
-// 			vscode.window.showInformationMessage(`没有匹配的输入法ID（当前：${currentIM}），请检查是否正确设置了“EnglishIM”和“ChineseIM”。`);
-// 	}
-// }
 
 function setCursor(currentIM: string) {
 	if (!vscode.window.activeTextEditor) {
 		out.info('setCursor:activeTextEditor === undefined');
 		return;
 	}
-	out.info(`setCursor:${vscode.window.activeTextEditor.document.fileName}`); 
-	const EnglishIM = getEnglishIM();
-	const ChineseIM = getChineseIM();
+	out.info(`setCursor:${vscode.window.activeTextEditor.document.fileName}`);
 	switch (currentIM) {
 		case EnglishIM:
-			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[getCursorStyleEnglish() as CS] };
+			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csEnglish] };
 			break;
 		case ChineseIM:
 			// vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle.Block };
-			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[getCursorStyleChinese() as CS] };
+			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csChinese] };
 			break;
 		default:
 			vscode.window.showInformationMessage(`没有匹配的输入法ID（当前：${currentIM}），请检查是否正确设置了“EnglishIM”和“ChineseIM”。`);
@@ -143,6 +139,7 @@ function setCursor(currentIM: string) {
 
 export async function activate(context: vscode.ExtensionContext) {
 	out.info("光标和输入法-ACTIVATE");
+	getConfiguration();
 	try {
 		setCursor(await obtainIM());
 	} catch (err) {
@@ -180,6 +177,10 @@ export async function activate(context: vscode.ExtensionContext) {
 				out.error(`${err}`);
 			}
 		}
+	}));
+
+	context.subscriptions.push(vscode.workspace.onDidChangeConfiguration((e:vscode.ConfigurationChangeEvent) => {
+		getConfiguration();    
 	}));
 }
 
