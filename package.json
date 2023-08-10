@@ -60,14 +60,14 @@
         },
         "imeandcursor.cursorStyle.English": {
           "type":"string",
-          "default": "line",
-          "enum":["line","block","underline","line-thin","block-outline","underline-thin"],
+          "default": "Line",
+          "enum":["Line","Block","Underline","LineThin","BlockOutline","UnderlineThin"],
           "description": "英文输入法状态下的光标样式"
         },
         "imeandcursor.cursorStyle.Chinese": {
           "type":"string",
-          "default": "block-outline",
-          "enum":["line","block","underline","line-thin","block-outline","underline-thin"],
+          "default": "Block",
+          "enum":["Line","Block","Underline","LineThin","BlockOutline","UnderlineThin"],
           "description": "中文输入法状态下的光标样式"
         },
         "imeandcursor.cursorColor.English": {

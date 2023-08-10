@@ -3,24 +3,28 @@ import * as vscode from 'vscode';
 import { exec } from 'child_process';
 import { resolve } from 'path';
 
-// const configuration = vscode.workspace.getConfiguration("imeandcursor");
-// const editorConfiguration = vscode.workspace.getConfiguration("editor");
-// const workbenchConfiguration = vscode.workspace.getConfiguration("workbench");
+
 const defaultObtainIMCmd = resolve(__dirname, '..', 'switcher', 'im-select.exe');
 const defaultSwitchIMCmd = defaultObtainIMCmd + ' {im}';
 const defaultEnglishIM = '1033';
 const defaultChineseIM = '2052';
-const cursorStyleBak = vscode.workspace.getConfiguration("editor").get('cursorStyle') as string;
-const cursorColorBak = vscode.workspace.getConfiguration("workbench").get('colorCustomizations');
-console.log(cursorStyleBak);
-console.log(cursorColorBak);
-const out = vscode.window.createOutputChannel('imeandcursor',{log:true});
 
-// let eventSubscriptions = [];
-// function getSwitcherLocation() {
-// 	let location = vscode.workspace.getConfiguration("imeandcursor").get<string>("switcherLocation");
-// 	return location ? location : resolve(__dirname, '..', 'switcher', 'im-select.exe');
-// }
+// const cursorStyles:{ [key: string]: vscode.TextEditorCursorStyle } = {
+// 	line: vscode.TextEditorCursorStyle['Line'],
+// 	block: vscode.TextEditorCursorStyle.Block,
+// 	underline: vscode.TextEditorCursorStyle.Underline,
+// 	'line-thin': vscode.TextEditorCursorStyle.LineThin,
+// 	'block-outline': vscode.TextEditorCursorStyle.BlockOutline,
+// 	'underline-thin': vscode.TextEditorCursorStyle.UnderlineThin,
+// };
+
+// type CS = 'Line'|'Block'|'Underline'|'LineThin'|'BlockOutline'|'UnderlineThin';  // 或
+type CS = keyof typeof vscode.TextEditorCursorStyle;
+
+
+const out = vscode.window.createOutputChannel('imeandcursor', { log: true });
+
+
 function getCursorStyleEnglish() {
 	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.English");
 }
@@ -76,9 +80,9 @@ function execCmd(cmd: string): Promise<string> {
 
 async function obtainIM() {
 	try {
-		let imID = await execCmd(getObtainIMCmd());
-		// console.log(imID.trim());
-		return imID.trim();
+		let IM = await execCmd(getObtainIMCmd());
+		// console.log(IM.trim());
+		return IM.trim();
 	} catch (e) {
 		vscode.window.showInformationMessage("获取输入法ID失败，请检查是否正确设置了“ObtainIMCmd”。");
 		throw (e);
@@ -86,95 +90,99 @@ async function obtainIM() {
 
 }
 
-async function switchIM(currentImID: string) {
-	let targetImID = getEnglishIM();
-	if (currentImID === targetImID) {
-		targetImID = getChineseIM();
+async function switchIM(currentIM: string) {
+	let targetIM = getEnglishIM();
+	if (currentIM === targetIM) {
+		targetIM = getChineseIM();
 	}
 	try {
-		await execCmd(getSwitchIMCmd().replace('{im}', targetImID));
+		await execCmd(getSwitchIMCmd().replace('{im}', targetIM));
 	} catch (e) {
 		vscode.window.showInformationMessage("切换输入法失败，请检查是否正确设置了“SwitchIMCmd”。");
 		throw (e);
 	}
 }
 
-function setCursor(currentImID: string) {
-	let EnglishIM = getEnglishIM();
-	let ChineseIM = getChineseIM();
-	switch (currentImID) {
+// function setCursorOld(currentIM: string) {
+// 	let EnglishIM = getEnglishIM();
+// 	let ChineseIM = getChineseIM();
+// 	switch (currentIM) {
+// 		case EnglishIM:
+// 			vscode.workspace.getConfiguration("editor").update('cursorStyle', getCursorStyleEnglish() as string, vscode.ConfigurationTarget.Global);
+// 			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": getCursorColorEnglish() as string }, vscode.ConfigurationTarget.Global);
+// 			break;
+// 		case ChineseIM:
+// 			vscode.workspace.getConfiguration("editor").update("cursorStyle", getCursorStyleChinese() as string, vscode.ConfigurationTarget.Global);
+// 			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": getCursorColorChinese() as string }, vscode.ConfigurationTarget.Global);
+// 			break;
+// 		default:
+// 			vscode.window.showInformationMessage(`没有匹配的输入法ID（当前：${currentIM}），请检查是否正确设置了“EnglishIM”和“ChineseIM”。`);
+// 	}
+// }
+
+function setCursor(currentIM: string) {
+	if (!vscode.window.activeTextEditor) {
+		out.info('setCursor:activeTextEditor === undefined');
+		return;
+	}
+	out.info(`setCursor:${vscode.window.activeTextEditor.document.fileName}`); 
+	const EnglishIM = getEnglishIM();
+	const ChineseIM = getChineseIM();
+	switch (currentIM) {
 		case EnglishIM:
-			vscode.workspace.getConfiguration("editor").update('cursorStyle', getCursorStyleEnglish() as string, vscode.ConfigurationTarget.Global);
-			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": getCursorColorEnglish() as string }, vscode.ConfigurationTarget.Global);
-			// vscode.workspace.getConfiguration("terminal").update('integrated.cursorStyle', 'line', vscode.ConfigurationTarget.Global);
+			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[getCursorStyleEnglish() as CS] };
 			break;
 		case ChineseIM:
-			vscode.workspace.getConfiguration("editor").update("cursorStyle", getCursorStyleChinese() as string, vscode.ConfigurationTarget.Global);
-			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": getCursorColorChinese() as string }, vscode.ConfigurationTarget.Global);
-			// vscode.workspace.getConfiguration("terminal").update('integrated.cursorStyle', 'block', vscode.ConfigurationTarget.Global);
+			// vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle.Block };
+			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[getCursorStyleChinese() as CS] };
 			break;
 		default:
-			vscode.window.showInformationMessage(`没有匹配的输入法ID（当前：${currentImID}），请检查是否正确设置了“EnglishIM”和“ChineseIM”。`);
+			vscode.window.showInformationMessage(`没有匹配的输入法ID（当前：${currentIM}），请检查是否正确设置了“EnglishIM”和“ChineseIM”。`);
 	}
 }
 
-
-
 export async function activate(context: vscode.ExtensionContext) {
-	console.log("光标和输入法 ACTIVATE");
+	out.info("光标和输入法-ACTIVATE");
 	try {
 		setCursor(await obtainIM());
-	} catch (e) {
-		console.log(e);
+	} catch (err) {
+		out.error(`${err}`);
 	}
 
 	context.subscriptions.push(vscode.commands.registerCommand('imeandcursor.switch', async () => {
+		out.info("switch IM!");
 		try {
 			await switchIM(await obtainIM());
 			setCursor(await obtainIM());
 
-		} catch (e) {
-			console.log(e);
+		} catch (err) {
+			out.error(`${err}`);
 		}
 	}));
 
 	context.subscriptions.push(vscode.window.onDidChangeWindowState(async (e: vscode.WindowState) => {
 		if (e.focused) {
-			console.log("window focused!");
+			out.info("window focused!");
 			try {
 				setCursor(await obtainIM());
-			} catch (e) {
-				console.log(e);
+			} catch (err) {
+				out.error(`${err}`);
 			}
 		}
 	}));
 
 	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(async (e: vscode.TextEditor | undefined) => {
-		// console.log('active text editor changed!',e);
 		if (e !== undefined) {
-			console.log('text editor activated!');
+			out.info('text editor activated!');
 			try {
 				setCursor(await obtainIM());
-			} catch (e) {
-				console.log(e);
+			} catch (err) {
+				out.error(`${err}`);
 			}
 		}
 	}));
 }
 
 export async function deactivate(context: vscode.ExtensionContext) {
-	console.log("光标和输入法 DEACTIVATE");
-
-	// return new Promise<void>((resolve,reject) => {
-	// 	console.log(vscode.workspace.getConfiguration('editor').get('cursorStyle'));
-		// vscode.workspace.getConfiguration("editor").update('cursorStyle', cursorStyleBak, vscode.ConfigurationTarget.Global).then(() => {
-	// 		console.log('update complete');
-	// 		resolve();
-	// 	},(err) =>{
-	// 		console.log('update failed',err);
-	// 		reject();
-	// 	});
-
-	// return vscode.workspace.getConfiguration("editor").update('cursorStyle',cursorStyleBak, vscode.ConfigurationTarget.Global);
-
+	out.info("光标和输入法-DEACTIVATE");
 }
