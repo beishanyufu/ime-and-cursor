@@ -69,16 +69,6 @@
           "default": "Block",
           "enum":["Line","Block","Underline","LineThin","BlockOutline","UnderlineThin"],
           "description": "中文输入法状态下的光标样式"
-        },
-        "imeandcursor.cursorColor.English": {
-          "type":"string",
-          "default": "#00FF00",
-          "description": "英文输入法状态下的光标十六进制(#RGB、#RGBA、#RRGGBB 或 #RRGGBBAA)颜色"
-        },
-        "imeandcursor.cursorColor.Chinese": {
-          "type":"string",
-          "default": "#FF0000",
-          "description": "中文输入法状态下的光标十六进制(#RGB、#RGBA、#RRGGBB 或 #RRGGBBAA)颜色"
         }
       }
     }
