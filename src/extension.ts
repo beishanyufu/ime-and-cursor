@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as vscode from 'vscode';
 import { exec } from 'child_process';
-import { resolve } from 'path';
+// import { resolve } from 'path';
 
-
-const defaultObtainIMCmd = resolve(__dirname, '..', 'switcher', 'im-select.exe');
-const defaultSwitchIMCmd = defaultObtainIMCmd + ' {im}';
 const defaultEnglishIM = '1033';
 const defaultChineseIM = '2052';
-
+// const defaultObtainIMCmd = resolve(__dirname, '..', 'switcher', 'im-select.exe');
+// const defaultSwitchIMCmd = defaultObtainIMCmd + ' {im}';
+let defaultObtainIMCmd = '';
+let defaultSwitchIMCmd = '';
 // type CS = 'Line'|'Block'|'Underline'|'LineThin'|'BlockOutline'|'UnderlineThin';  // 或
 type CS = keyof typeof vscode.TextEditorCursorStyle;
 
@@ -20,47 +20,6 @@ let EnglishIM: string;
 let ChineseIM: string;
 let obtainIMCmd: string;
 let switchIMCmd: string;
-
-// function getCursorStyleEnglish() {
-// 	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.English");
-// }
-// function getCursorStyleChinese() {
-// 	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.Chinese");
-// }
-// function getCursorColorEnglish() {
-// 	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorColor.English");
-// }
-// function getCursorColorChinese() {
-// 	return vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorColor.Chinese");
-// }
-// function getEnglishIM() {
-// 	let EnglishIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("EnglishIM")?.trim();
-// 	if (!EnglishIM) {
-// 		EnglishIM = defaultEnglishIM;
-// 	}
-// 	return EnglishIM;
-// }
-// function getChineseIM() {
-// 	let ChineseIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("ChineseIM")?.trim();
-// 	if (!ChineseIM) {
-// 		ChineseIM = defaultChineseIM;
-// 	}
-// 	return ChineseIM;
-// }
-// function getSwitchIMCmd() {
-// 	let switchIMCmd = vscode.workspace.getConfiguration("imeandcursor").get<string>("switchIMCmd");
-// 	if (switchIMCmd === '/path/to/im-select {im}' || !switchIMCmd) {
-// 		switchIMCmd = defaultSwitchIMCmd;
-// 	}
-// 	return switchIMCmd;
-// }
-// function getObtainIMCmd() {
-// 	let obtainIMCmd = vscode.workspace.getConfiguration("imeandcursor").get<string>("obtainIMCmd");
-// 	if (obtainIMCmd === '/path/to/im-select' || !obtainIMCmd) {
-// 		obtainIMCmd = defaultObtainIMCmd;
-// 	}
-// 	return obtainIMCmd;
-// }
 
 function getConfiguration() {
 	csChinese = vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.Chinese") as CS;
@@ -129,7 +88,6 @@ function setCursor(currentIM: string) {
 			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csEnglish] };
 			break;
 		case ChineseIM:
-			// vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle.Block };
 			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csChinese] };
 			break;
 		default:
@@ -139,6 +97,8 @@ function setCursor(currentIM: string) {
 
 export async function activate(context: vscode.ExtensionContext) {
 	out.info("光标和输入法-ACTIVATE");
+	defaultObtainIMCmd=context.asAbsolutePath('switcher/im-select.exe');
+	defaultSwitchIMCmd = defaultObtainIMCmd + ' {im}';
 	getConfiguration();
 	try {
 		setCursor(await obtainIM());
