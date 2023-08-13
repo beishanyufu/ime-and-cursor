@@ -23,16 +23,16 @@
 
 ### 安装第三方输入法切换工具并完成本插件的相关设置
 
-您可以使用任何能够获取输入法key值和使用key值进行输入法切换的命令行工具。下面以[im-select](https://github.com/daipeihust/im-select)为例说明相关安装和配置工作：
+您可以使用任何能够获取输入法的key和使用key进行输入法切换的命令行工具。下面以[im-select](https://github.com/daipeihust/im-select)为例说明相关安装和配置工作：
 #### 1. 安装 im-select（[安装说明](https://github.com/daipeihust/im-select/blob/master/README_CN.md)）
 #### 2. 分别获取中文和英文输入法的key（可以简单理解为输入法的ID）
 切换到英文输入法，并在终端中执行命令：
 
 `/<path-to-im-select-installation>/im-select`
 
-返回值即为您的英文输入法的key值。
+返回值即为您的英文输入法的key。
 
-以同样的方法获取您使用的中文输入法的key值。
+以同样的方法获取您使用的中文输入法的key。
 
 #### 3. 对本插件进行设置
 
@@ -40,7 +40,7 @@
 
 * `imeandcursor.ChineseIM`: 你的中文输入法的key
 * `imeandcursor.EnglishIM`: 你的英文输入法的key
-* `imeandcursor.obtainIMCmd`: 用于获取输入法key的命令（需要使用绝对路径）
+* `imeandcursor.obtainIMCmd`: 用于获取输入法的key的命令（需要使用绝对路径）
 * `imeandcursor.switchIMCmd`: 用于切换输入法的命令（需要使用绝对路径，且将{im}作为切换的目标输入法ID的占位符）
 
 下面是一个具体设置的参考样例：

@@ -1,18 +1,19 @@
 {
   "name": "imeandcursor",
   "displayName": "IME and Cursor",
-  "description": "",
-  "version": "0.0.1",
+  "description": "令光标兼作中英文输入状态指示器",
+  "icon": "images/icon.png",
+  "version": "1.0.0",
   "engines": {
-    "vscode": "^1.80.0"
+    "vscode": "^1.72.0"
   },
   "categories": [
     "Other"
   ],
   "main": "./out/extension.js",
-  "activationEvents": [
-    "onCommand:imeandcursor.switch",
-    "*"
+  "activationEvents": [    
+    "*",
+    "onCommand:imeandcursor.switch"
   ],
   "contributes": {
     "commands": [
@@ -33,28 +34,28 @@
         "imeandcursor.EnglishIM": {
           "order": 1,
           "type": "string",
-          "markdownDescription": "你的英语输入法ID。请参考：[这里](https://github.com/)",
+          "markdownDescription": "你的英语输入法的ID。请参考：[这里](https://github.com/)",
           "default": "1033",
           "scope": "machine"
         },
         "imeandcursor.ChineseIM": {
           "order": 0,
           "type": "string",
-          "markdownDescription": "你的中文输入法ID。请参考：[这里](https://github.com/)",
+          "markdownDescription": "你的中文输入法的ID。请参考：[这里](https://github.com/)",
           "default": "2052",
           "scope": "machine"
         },
         "imeandcursor.switchIMCmd": {
           "order": 3,
           "type": "string",
-          "description": "用于切换输入法的cmd/shell命令，{im}用作输入法ID的占位符",
+          "description": "用于切换输入法的cmd/shell命令。{im}用作输入法ID的占位符请参考：[这里](https://github.com/)",
           "default": "/path/to/im-select {im}",
           "scope": "machine"
         },
         "imeandcursor.obtainIMCmd": {
           "order": 2,
           "type": "string",
-          "description": "用于获取输入法ID的cmd/shell命令",
+          "description": "用于获取输入法ID的cmd/shell命令。请参考：[这里](https://github.com/)",
           "default": "/path/to/im-select",
           "scope": "machine"
         },
@@ -62,13 +63,13 @@
           "type":"string",
           "default": "Line",
           "enum":["Line","Block","Underline","LineThin","BlockOutline","UnderlineThin"],
-          "description": "英文输入法状态下的光标样式"
+          "description": "英文输入状态下的光标样式"
         },
         "imeandcursor.cursorStyle.Chinese": {
           "type":"string",
           "default": "Block",
           "enum":["Line","Block","Underline","LineThin","BlockOutline","UnderlineThin"],
-          "description": "中文输入法状态下的光标样式"
+          "description": "中文输入状态下的光标样式"
         }
       }
     }
