@@ -22,6 +22,7 @@ let obtainIMCmd: string;
 let switchIMCmd: string;
 
 function getConfiguration() {
+	out.info('get configuration.');
 	csChinese = vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.Chinese") as CS;
 	csEnglish = vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.English") as CS;
 	EnglishIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("EnglishIM")?.trim() as string;
@@ -60,7 +61,7 @@ async function obtainIM() {
 		// console.log(IM.trim());
 		return IM.trim();
 	} catch (e) {
-		vscode.window.showInformationMessage("获取输入法ID失败，请检查是否正确设置了“ObtainIMCmd”。");
+		vscode.window.showInformationMessage("获取输入法的key失败，请检查是否正确设置了“ObtainIMCmd”。");
 		throw (e);
 	}
 
@@ -91,7 +92,7 @@ function setCursor(currentIM: string) {
 			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csChinese] };
 			break;
 		default:
-			vscode.window.showInformationMessage(`没有匹配的输入法ID（当前：${currentIM}），请检查是否正确设置了“EnglishIM”和“ChineseIM”。`);
+			vscode.window.showInformationMessage(`没有匹配的输入法key值（当前：${currentIM}），请检查是否正确设置了“EnglishIM”和“ChineseIM”。`);
 	}
 }
 
