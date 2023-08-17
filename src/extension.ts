@@ -12,7 +12,7 @@ let defaultSwitchIMCmd = '';
 // type CS = 'Line'|'Block'|'Underline'|'LineThin'|'BlockOutline'|'UnderlineThin';  // 或
 type CS = keyof typeof vscode.TextEditorCursorStyle;
 
-const out = vscode.window.createOutputChannel('ime-and-cursor', { log: true });
+// const out = vscode.window.createOutputChannel('ime-and-cursor', { log: true });
 
 let csEnglish: CS;
 let csChinese: CS;
@@ -22,7 +22,7 @@ let obtainIMCmd: string;
 let switchIMCmd: string;
 
 function getConfiguration() {
-	out.info('get configuration.');
+	// out.info('get configuration.');
 	csChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.Chinese") as CS;
 	csEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.English") as CS;
 	EnglishIM = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("EnglishIM")?.trim() as string;
@@ -80,10 +80,10 @@ async function switchIM(currentIM: string) {
 
 function setCursor(currentIM: string) {
 	if (!vscode.window.activeTextEditor) {
-		out.info('setCursor:activeTextEditor === undefined');
+		// out.info('setCursor:activeTextEditor === undefined');
 		return;
 	}
-	out.info(`setCursor:${vscode.window.activeTextEditor.document.fileName}`);
+	// out.info(`setCursor:${vscode.window.activeTextEditor.document.fileName}`);
 	switch (currentIM) {
 		case EnglishIM:
 			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csEnglish] };
@@ -97,45 +97,45 @@ function setCursor(currentIM: string) {
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-	out.info("光标和输入法-ACTIVATE");
+	// out.info("光标和输入法-ACTIVATE");
 	defaultObtainIMCmd=context.asAbsolutePath('switcher/im-select.exe');
 	defaultSwitchIMCmd = defaultObtainIMCmd + ' {im}';
 	getConfiguration();
 	try {
 		setCursor(await obtainIM());
 	} catch (err) {
-		out.error(`${err}`);
+		// out.error(`${err}`);
 	}
 
 	context.subscriptions.push(vscode.commands.registerCommand('ime-and-cursor.switch', async () => {
-		out.info("switch IM!");
+		// out.info("switch IM!");
 		try {
 			await switchIM(await obtainIM());
 			setCursor(await obtainIM());
 
 		} catch (err) {
-			out.error(`${err}`);
+			// out.error(`${err}`);
 		}
 	}));
 
 	context.subscriptions.push(vscode.window.onDidChangeWindowState(async (e: vscode.WindowState) => {
 		if (e.focused) {
-			out.info("window focused!");
+			// out.info("window focused!");
 			try {
 				setCursor(await obtainIM());
 			} catch (err) {
-				out.error(`${err}`);
+				// out.error(`${err}`);
 			}
 		}
 	}));
 
 	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(async (e: vscode.TextEditor | undefined) => {
 		if (e !== undefined) {
-			out.info('text editor activated!');
+			// out.info('text editor activated!');
 			try {
 				setCursor(await obtainIM());
 			} catch (err) {
-				out.error(`${err}`);
+				// out.error(`${err}`);
 			}
 		}
 	}));
@@ -146,5 +146,5 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 export async function deactivate(context: vscode.ExtensionContext) {
-	out.info("光标和输入法-DEACTIVATE");
+	// out.info("光标和输入法-DEACTIVATE");
 }
