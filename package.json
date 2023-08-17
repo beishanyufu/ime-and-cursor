@@ -9,7 +9,10 @@
   "keywords": [
     "IM",
     "IME",
-    "输入法"
+    "输入法",
+    "光标",
+    "切换",
+    "switch"
   ],
   "homepage": "https://github.com/beishanyufu/ime-and-cursor",
 	"repository": {
@@ -50,27 +53,27 @@
           "order": 1,
           "type": "string",
           "markdownDescription": "你的英语输入法的ID。请参考：[这里](https://github.com/beishanyufu/ime-and-cursor#readme)",
-          "default": "1033",
+          "default": "",
           "scope": "machine"
         },
         "ime-and-cursor.ChineseIM": {
           "order": 0,
           "type": "string",
           "markdownDescription": "你的中文输入法的ID。请参考：[这里](https://github.com/beishanyufu/ime-and-cursor#readme)",
-          "default": "2052",
+          "default": "",
           "scope": "machine"
         },
         "ime-and-cursor.switchIMCmd": {
           "order": 3,
           "type": "string",
-          "description": "用于切换输入法的cmd/shell命令。{im}用作输入法ID的占位符。请参考：[这里](https://github.com/beishanyufu/ime-and-cursor#readme)",
+          "markdownDescription": "用于切换输入法的cmd/shell命令。{im}用作输入法ID的占位符。请参考：[这里](https://github.com/beishanyufu/ime-and-cursor#readme)",
           "default": "/path/to/im-select {im}",
           "scope": "machine"
         },
         "ime-and-cursor.obtainIMCmd": {
           "order": 2,
           "type": "string",
-          "description": "用于获取输入法ID的cmd/shell命令。请参考：[这里](https://github.com/beishanyufu/ime-and-cursor#readme)",
+          "markdownDescription": "用于获取输入法ID的cmd/shell命令。请参考：[这里](https://github.com/beishanyufu/ime-and-cursor#readme)",
           "default": "/path/to/im-select",
           "scope": "machine"
         },
