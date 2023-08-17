@@ -12,7 +12,7 @@
 ### 安装英语语言包
 如果您的系统未安装英语语言包（大概率，因为新近的windows中文版不再默认安装。可用鼠标左键点击底部任务栏右侧的输入法图标，查看弹出的列表中是否包含“英语(美国)”），则需要您手动安装一下。具体操作为：
 
-打开 **设置** -> **时间和语言** ->**语言**（或**语言和区域**） ，找到“首选语言”栏，点击“添加语言”。
+打开**设置**（快捷键：win+i） -> **时间和语言** -> **语言**（或**语言和区域**） ，找到“首选语言”栏，点击“添加语言”。
 
 在打开的对话框中，找到“`English(United States)`”，选中然后点击下方按钮进入下一页。
 
@@ -38,17 +38,17 @@
 
 相关的设置项共有四个，分别是：
 
-* `imeandcursor.ChineseIM`: 你的中文输入法的key
-* `imeandcursor.EnglishIM`: 你的英文输入法的key
-* `imeandcursor.obtainIMCmd`: 用于获取输入法的key的命令（需要使用绝对路径）
-* `imeandcursor.switchIMCmd`: 用于切换输入法的命令（需要使用绝对路径，且将{im}作为切换的目标输入法ID的占位符）
+* `ime-and-cursor.ChineseIM`: 你的中文输入法的key
+* `ime-and-cursor.EnglishIM`: 你的英文输入法的key
+* `ime-and-cursor.obtainIMCmd`: 用于获取输入法的key的命令（需要使用绝对路径）
+* `ime-and-cursor.switchIMCmd`: 用于切换输入法的命令（需要使用绝对路径，且将{im}作为切换的目标输入法ID的占位符）
 
 下面是一个具体设置的参考样例：
 ```json
-"imeandcursor.ChineseIM": "com.sogou.inputmethod.sogou.pinyin",
-"imeandcursor.EnglishIM": "com.apple.keylayout.ABC",
-"imeandcursor.obtainIMCmd": "/usr/local/bin/im-select",
-"imeandcursor.switchIMCmd": "/usr/local/bin/im-select {im}"
+"ime-and-cursor.ChineseIM": "com.sogou.inputmethod.sogou.pinyin",
+"ime-and-cursor.EnglishIM": "com.apple.keylayout.ABC",
+"ime-and-cursor.obtainIMCmd": "/usr/local/bin/im-select",
+"ime-and-cursor.switchIMCmd": "/usr/local/bin/im-select {im}"
 
 ```
 
@@ -66,10 +66,10 @@ Linux有许多命令行工具可以切换输入法，如ibus，xkb-switch等，�
 
 > 对于window用户，安装了英语语言包后，本插件应该就可以正常使用了。但如有需要也可以参考前面关于Mac系统的说明，自己安装第三方输入法切换工具并完成相关设置（同时参考[这里](https://github.com/daipeihust/im-select/blob/master/README_CN.md)）。下面是Windows上本插件的一个参考配置样例：
 ```json
-"imeandcursor.ChineseIM": "2052",
-"imeandcursor.EnglishIM": "1033",
-"imeandcursor.obtainIMCmd": "D:\\bin\\im-select.exe",
-"imeandcursor.switchIMCmd": "D:\\bin\\im-select.exe {im}"
+"ime-and-cursor.ChineseIM": "2052",
+"ime-and-cursor.EnglishIM": "1033",
+"ime-and-cursor.obtainIMCmd": "D:\\bin\\im-select.exe",
+"ime-and-cursor.switchIMCmd": "D:\\bin\\im-select.exe {im}"
 
 ```
 

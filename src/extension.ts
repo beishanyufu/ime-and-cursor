@@ -12,7 +12,7 @@ let defaultSwitchIMCmd = '';
 // type CS = 'Line'|'Block'|'Underline'|'LineThin'|'BlockOutline'|'UnderlineThin';  // 或
 type CS = keyof typeof vscode.TextEditorCursorStyle;
 
-const out = vscode.window.createOutputChannel('imeandcursor', { log: true });
+const out = vscode.window.createOutputChannel('ime-and-cursor', { log: true });
 
 let csEnglish: CS;
 let csChinese: CS;
@@ -23,21 +23,21 @@ let switchIMCmd: string;
 
 function getConfiguration() {
 	out.info('get configuration.');
-	csChinese = vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.Chinese") as CS;
-	csEnglish = vscode.workspace.getConfiguration("imeandcursor").get<string>("cursorStyle.English") as CS;
-	EnglishIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("EnglishIM")?.trim() as string;
+	csChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.Chinese") as CS;
+	csEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.English") as CS;
+	EnglishIM = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("EnglishIM")?.trim() as string;
 	if (!EnglishIM) {
 		EnglishIM = defaultEnglishIM;
 	}
-	ChineseIM = vscode.workspace.getConfiguration("imeandcursor").get<string>("ChineseIM")?.trim() as string;
+	ChineseIM = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("ChineseIM")?.trim() as string;
 	if (!ChineseIM) {
 		ChineseIM = defaultChineseIM;
 	}
-	obtainIMCmd = vscode.workspace.getConfiguration("imeandcursor").get<string>("obtainIMCmd") as string;
+	obtainIMCmd = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("obtainIMCmd") as string;
 	if (obtainIMCmd === '/path/to/im-select' || !obtainIMCmd) {
 		obtainIMCmd = defaultObtainIMCmd;
 	}
-	switchIMCmd = vscode.workspace.getConfiguration("imeandcursor").get<string>("switchIMCmd") as string;
+	switchIMCmd = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("switchIMCmd") as string;
 	if (switchIMCmd === '/path/to/im-select {im}' || !switchIMCmd) {
 		switchIMCmd = defaultSwitchIMCmd;
 	}
@@ -107,7 +107,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		out.error(`${err}`);
 	}
 
-	context.subscriptions.push(vscode.commands.registerCommand('imeandcursor.switch', async () => {
+	context.subscriptions.push(vscode.commands.registerCommand('ime-and-cursor.switch', async () => {
 		out.info("switch IM!");
 		try {
 			await switchIM(await obtainIM());
