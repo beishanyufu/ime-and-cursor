@@ -11,8 +11,12 @@
     "IME",
     "输入法",
     "光标",
-    "切换",
-    "switch"
+    "cursor",
+    "键盘",
+    "keyboard",
+    "chinese",
+    "input method",
+    "中文"
   ],
   "homepage": "https://github.com/beishanyufu/ime-and-cursor",
 	"repository": {
