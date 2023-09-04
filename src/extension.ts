@@ -35,7 +35,7 @@ function getConfiguration() {
 	ccEnable = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorColor.enable") as boolean;
 	if (ccEnable) {
 		ccChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.Chinese") as string;
-		ccEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.EnglCish") as string;
+		ccEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.English") as string;
 	} else {
 		vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": undefined }, vscode.ConfigurationTarget.Global);
 	}
