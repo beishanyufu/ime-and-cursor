@@ -16,6 +16,10 @@ type CS = keyof typeof vscode.TextEditorCursorStyle;
 
 let csEnglish: CS;
 let csChinese: CS;
+let ccEnglish: string;
+let ccChinese: string;
+let csEnable: boolean;
+let ccEnable: boolean;
 let EnglishIM: string;
 let ChineseIM: string;
 let obtainIMCmd: string;
@@ -23,8 +27,18 @@ let switchIMCmd: string;
 
 function getConfiguration() {
 	// out.info('get configuration.');
-	csChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.Chinese") as CS;
-	csEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.English") as CS;
+	csEnable = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorStyle.enable") as boolean;
+	if (csEnable) {
+		csChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.Chinese") as CS;
+		csEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.English") as CS;
+	}
+	ccEnable = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorColor.enable") as boolean;
+	if (ccEnable) {
+		ccChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.Chinese") as string;
+		ccEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.EnglCish") as string;
+	} else {
+		vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": undefined }, vscode.ConfigurationTarget.Global);
+	}
 	EnglishIM = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("EnglishIM")?.trim() as string;
 	if (!EnglishIM) {
 		EnglishIM = defaultEnglishIM;
@@ -86,10 +100,20 @@ function setCursor(currentIM: string) {
 	// out.info(`setCursor:${vscode.window.activeTextEditor.document.fileName}`);
 	switch (currentIM) {
 		case EnglishIM:
-			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csEnglish] };
+			if (csEnable) {
+				vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csEnglish] };
+			}
+			if (ccEnable) {
+				vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": ccEnglish }, vscode.ConfigurationTarget.Global);
+			}
 			break;
 		case ChineseIM:
-			vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csChinese] };
+			if (csEnable) {
+				vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csChinese] };
+			}
+			if (ccEnable) {
+				vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": ccChinese }, vscode.ConfigurationTarget.Global);
+			}
 			break;
 		default:
 			vscode.window.showInformationMessage(`没有匹配的输入法key值（当前：${currentIM}），请检查是否正确设置了“EnglishIM”和“ChineseIM”。`);
@@ -98,7 +122,7 @@ function setCursor(currentIM: string) {
 
 export async function activate(context: vscode.ExtensionContext) {
 	// out.info("光标和输入法-ACTIVATE");
-	defaultObtainIMCmd=context.asAbsolutePath('switcher/im-select.exe');
+	defaultObtainIMCmd = context.asAbsolutePath('switcher/im-select.exe');
 	defaultSwitchIMCmd = defaultObtainIMCmd + ' {im}';
 	getConfiguration();
 	try {
@@ -140,8 +164,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	}));
 
-	context.subscriptions.push(vscode.workspace.onDidChangeConfiguration((e:vscode.ConfigurationChangeEvent) => {
-		getConfiguration();    
+	context.subscriptions.push(vscode.workspace.onDidChangeConfiguration((e: vscode.ConfigurationChangeEvent) => {
+		getConfiguration();
 	}));
 }
 
