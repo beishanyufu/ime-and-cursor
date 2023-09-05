@@ -16,8 +16,8 @@ type CS = keyof typeof vscode.TextEditorCursorStyle;
 
 let csEnglish: CS;
 let csChinese: CS;
-let ccEnglish: string;
-let ccChinese: string;
+let ccEnglish: string | undefined;
+let ccChinese: string | undefined;
 let csEnable: boolean;
 let ccEnable: boolean;
 let EnglishIM: string;
@@ -36,6 +36,8 @@ function getConfiguration() {
 	if (ccEnable) {
 		ccChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.Chinese") as string;
 		ccEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.English") as string;
+		if (ccEnglish === '') { ccEnglish = undefined; }
+        if (ccChinese === '') { ccChinese = undefined; }
 	} else {
 		vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": undefined }, vscode.ConfigurationTarget.Global);
 	}
@@ -136,7 +138,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		try {
 			await switchIM(await obtainIM());
 			setCursor(await obtainIM());
-
+			console.log("switch");
 		} catch (err) {
 			// out.error(`${err}`);
 		}

@@ -85,7 +85,7 @@
           "order": 4,
           "type":"boolean",
           "default":true,
-          "description": "是否使用光标样式指示中英文输入状态"
+          "description": "使用光标样式指示中英文输入状态"
         },
         "ime-and-cursor.cursorStyle.English": {
           "order": 5,
@@ -105,7 +105,7 @@
           "order": 7,
           "type":"boolean",
           "default":false,
-          "description": "是否使用光标颜色指示中英文输入状态"
+          "description": "使用光标颜色指示中英文输入状态"
         },
         "ime-and-cursor.cursorColor.English": {
           "order": 8,
