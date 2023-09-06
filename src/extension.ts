@@ -24,23 +24,62 @@ let EnglishIM: string;
 let ChineseIM: string;
 let obtainIMCmd: string;
 let switchIMCmd: string;
+let useWithVim: boolean;
+
+let didCSEnableOnceTurnOff = false;
+
+function isVimOn() {
+	let isvimon = false;
+	for (let ext of vscode.extensions.all) {
+		if (ext.id.includes('vim') && ext.isActive) {
+			isvimon = true;
+			// console.log("has active vim");
+			break;
+		}
+	}
+	return isvimon;
+}
+
+async function ifVimOn() {
+	if (!useWithVim) {
+		return;
+	}
+	if (ccEnable && !csEnable && isVimOn()) {
+		try {
+			await switchIM(ChineseIM);
+			// console.log("switch on vim");
+		} catch (err) {
+			// out.error(`${err}`);
+		}
+	}
+}
 
 function getConfiguration() {
 	// out.info('get configuration.');
-	csEnable = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorStyle.enable") as boolean;
-	if (csEnable) {
-		csChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.Chinese") as CS;
-		csEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.English") as CS;
+	let csEnableTemp = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorStyle.enable") as boolean;
+	if (csEnableTemp !== csEnable) {
+		csEnable = csEnableTemp;
+		if (!csEnableTemp) {
+			didCSEnableOnceTurnOff = true;
+			vscode.window.showInformationMessage('稍后如果发现光标样式不对，可通过重启VSCode进行重置。');
+		}
 	}
-	ccEnable = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorColor.enable") as boolean;
-	if (ccEnable) {
-		ccChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.Chinese") as string;
-		ccEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.English") as string;
-		if (ccEnglish === '') { ccEnglish = undefined; }
-        if (ccChinese === '') { ccChinese = undefined; }
-	} else {
-		vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": undefined }, vscode.ConfigurationTarget.Global);
+
+	let ccEnableTemp = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorColor.enable") as boolean;
+	if (ccEnableTemp !== ccEnable) {
+		ccEnable = ccEnableTemp;
+		if (!ccEnableTemp) {
+			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": undefined }, vscode.ConfigurationTarget.Global);
+		}
 	}
+
+	csChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.Chinese") as CS;
+	csEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorStyle.English") as CS;
+	ccChinese = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.Chinese") as string;
+	ccEnglish = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("cursorColor.English") as string;
+	if (ccEnglish === '') { ccEnglish = undefined; }
+	if (ccChinese === '') { ccChinese = undefined; }
+
 	EnglishIM = vscode.workspace.getConfiguration("ime-and-cursor").get<string>("EnglishIM")?.trim() as string;
 	if (!EnglishIM) {
 		EnglishIM = defaultEnglishIM;
@@ -57,6 +96,7 @@ function getConfiguration() {
 	if (switchIMCmd === '/path/to/im-select {im}' || !switchIMCmd) {
 		switchIMCmd = defaultSwitchIMCmd;
 	}
+	useWithVim = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("useWithVim") as boolean;
 }
 
 function execCmd(cmd: string): Promise<string> {
@@ -124,8 +164,11 @@ function setCursor(currentIM: string) {
 
 export async function activate(context: vscode.ExtensionContext) {
 	// out.info("光标和输入法-ACTIVATE");
+	// console.log('ime-and-cursor activate');
 	defaultObtainIMCmd = context.asAbsolutePath('switcher/im-select.exe');
 	defaultSwitchIMCmd = defaultObtainIMCmd + ' {im}';
+	csEnable = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorStyle.enable") as boolean;
+	ccEnable = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorColor.enable") as boolean;
 	getConfiguration();
 	try {
 		setCursor(await obtainIM());
@@ -138,7 +181,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		try {
 			await switchIM(await obtainIM());
 			setCursor(await obtainIM());
-			console.log("switch");
+			// console.log("switch");
 		} catch (err) {
 			// out.error(`${err}`);
 		}
@@ -147,6 +190,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.window.onDidChangeWindowState(async (e: vscode.WindowState) => {
 		if (e.focused) {
 			// out.info("window focused!");
+			ifVimOn();
 			try {
 				setCursor(await obtainIM());
 			} catch (err) {
@@ -156,8 +200,18 @@ export async function activate(context: vscode.ExtensionContext) {
 	}));
 
 	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(async (e: vscode.TextEditor | undefined) => {
+		// console.log(e);
 		if (e !== undefined) {
 			// out.info('text editor activated!');
+			if (didCSEnableOnceTurnOff && !csEnable && vscode.window.activeTextEditor) {
+				if (!isVimOn()) {
+					vscode.window.activeTextEditor.options = { cursorStyle: 1 };
+					// console.log('reset active text editor cursor style');
+				}
+			}
+			// if (e.options.cursorStyle !== 1) {
+				ifVimOn();
+			// }
 			try {
 				setCursor(await obtainIM());
 			} catch (err) {
@@ -166,11 +220,16 @@ export async function activate(context: vscode.ExtensionContext) {
 		}
 	}));
 
+
 	context.subscriptions.push(vscode.workspace.onDidChangeConfiguration((e: vscode.ConfigurationChangeEvent) => {
-		getConfiguration();
+		if (e.affectsConfiguration("ime-and-cursor")) {
+			getConfiguration();
+			// console.log('getConfiguration');
+		}
 	}));
 }
 
 export async function deactivate(context: vscode.ExtensionContext) {
 	// out.info("光标和输入法-DEACTIVATE");
+	await vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": undefined }, vscode.ConfigurationTarget.Global);
 }

@@ -3,7 +3,7 @@
 
 *“要盲打，不要盲切盲输（切换输入法和输入中英文）。让打字时视觉的自然焦点——光标，告诉你当前的输入语言是英文还是中文。”*
 
-**光标和输入法**（**IME and Cursor**）是为[VSCode](https://code.visualstudio.com/)编写的一个小插件。它的功能和原理非常简单，就是通过适时获取当前的输入语言，来相应地设置光标样式（默认英文输入状态对应普通的竖线型光标，中文输入状态对应块状光标，可设置）。
+**光标和输入法**（**IME and Cursor**）是为[VSCode](https://code.visualstudio.com/)编写的一个小插件。它的功能和原理非常简单，就是通过适时获取当前输入语言，来相应地设置光标样式（默认英文输入状态对应普通的竖线型光标，中文输入状态对应块状光标，可设置）或光标颜色（默认未开启，可设置）。
 
 安装本插件后，为了能够及时响应输入语言的改变，需要您在使用vscode的过程中，使用本插件提供的快捷键（默认为`shift+space`，可设置）而不是系统层面的快捷键（如`shift+alt`）来进行输入语言的切换。
 
@@ -72,6 +72,15 @@ Linux有许多命令行工具可以切换输入法，如ibus，xkb-switch等，�
 "ime-and-cursor.switchIMCmd": "D:\\bin\\im-select.exe {im}"
 
 ```
+
+## 补充说明三（仅针对Vim用户）：
+> 本插件经过简单设置，在单独使用光标颜色指示中英文输入状态时可以和Vim插件同时使用，设置方法如下：
+```json
+    "ime-and-cursor.cursorStyle.enable": false,
+    "ime-and-cursor.cursorColor.enable": true,
+    "ime-and-cursor.useWithVim": true,
+```
+> **小提示：**[VSCodeVim](https://github.com/VSCodeVim/Vim)插件经过设置支持在切换到normal模式时，自动将输入语言切换到英文，而在回到insert模式时又能自动切换回之前在insert模式下所使用的语言。如果不使用这个功能，本插件（[IME and Cursor](https://github.com/beishanyufu/ime-and-cursor)）为光标设置的颜色将始终实时对应当前的输入语言。如果使用这个功能，本插件为光标设置的颜色则会一直对应insert模式下使用的输入语言——即使在normal模式下，VSCodeVim自动将输入语言切换为英语后，光标也将保持insert（读作『英雄』）本色。
 
 
 ## 最后
