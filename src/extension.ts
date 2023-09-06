@@ -190,7 +190,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.window.onDidChangeWindowState(async (e: vscode.WindowState) => {
 		if (e.focused) {
 			// out.info("window focused!");
-			ifVimOn();
+			await ifVimOn();
 			try {
 				setCursor(await obtainIM());
 			} catch (err) {
@@ -210,7 +210,7 @@ export async function activate(context: vscode.ExtensionContext) {
 				}
 			}
 			// if (e.options.cursorStyle !== 1) {
-				ifVimOn();
+				await ifVimOn();
 			// }
 			try {
 				setCursor(await obtainIM());
