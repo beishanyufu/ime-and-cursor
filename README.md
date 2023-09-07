@@ -1,7 +1,7 @@
 <h1 align="center">光标和输入法（IME and Cursor）</h1>
 <p align="center"><strong>令光标兼作中英文输入状态的指示器</strong></p>
 
-*“要盲打，不要盲切盲输（切换输入法和输入中英文）。让打字时视觉的自然焦点——光标，告诉你当前的输入语言是英文还是中文。”*
+> “要盲打，不要盲切盲输（切换输入法和输入中英文）。让打字时视觉的自然焦点——光标，告诉你当前的输入语言是英文还是中文。”
 
 **光标和输入法**（**IME and Cursor**）是为[VSCode](https://code.visualstudio.com/)编写的一个小插件。它的功能和原理非常简单，就是通过适时获取当前输入语言，来相应地设置光标样式（默认英文输入状态对应普通的竖线型光标，中文输入状态对应方块型光标，可设置）或光标颜色（默认未开启，可设置）。
 
@@ -78,9 +78,9 @@ Linux有许多命令行工具可以获取输入法的key和切换输入法，如
 ## 补充说明三（仅针对Vim用户）：
 本插件经过简单设置，在单独使用光标颜色指示中英文输入状态时可以和Vim插件同时使用，具体设置方法如下：
 ```json
-    "ime-and-cursor.cursorStyle.enable": false,
-    "ime-and-cursor.cursorColor.enable": true,
-    "ime-and-cursor.useWithVim": true,
+"ime-and-cursor.cursorStyle.enable": false,
+"ime-and-cursor.cursorColor.enable": true,
+"ime-and-cursor.useWithVim": true,
 ```
 ---
 ## 最后
