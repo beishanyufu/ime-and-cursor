@@ -40,19 +40,19 @@ function isVimOn() {
 	return isvimon;
 }
 
-async function ifVimOn() {
-	if (!useWithVim) {
-		return;
-	}
-	if (ccEnable && !csEnable && isVimOn()) {
-		try {
-			await switchIM(ChineseIM);
-			// console.log("switch on vim");
-		} catch (err) {
-			// out.error(`${err}`);
-		}
-	}
-}
+// async function ifVimOn() {
+// 	if (!useWithVim) {
+// 		return;
+// 	}
+// 	if (ccEnable && !csEnable && isVimOn()) {
+// 		try {
+// 			await switchIM(ChineseIM);
+// 			// console.log("switch on vim");
+// 		} catch (err) {
+// 			// out.error(`${err}`);
+// 		}
+// 	}
+// }
 
 function getConfiguration() {
 	// out.info('get configuration.');
@@ -61,7 +61,7 @@ function getConfiguration() {
 		csEnable = csEnableTemp;
 		if (!csEnableTemp) {
 			didCSEnableOnceTurnOff = true;
-			vscode.window.showInformationMessage('稍后如果发现光标样式不对，可通过重启VSCode进行重置。');
+			// vscode.window.showInformationMessage('稍后如果发现光标样式不对，可通过重启VSCode进行重置。');
 		}
 	}
 
@@ -190,7 +190,7 @@ export async function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(vscode.window.onDidChangeWindowState(async (e: vscode.WindowState) => {
 		if (e.focused) {
 			// out.info("window focused!");
-			await ifVimOn();
+			// await ifVimOn();
 			try {
 				setCursor(await obtainIM());
 			} catch (err) {
@@ -209,9 +209,9 @@ export async function activate(context: vscode.ExtensionContext) {
 					// console.log('reset active text editor cursor style');
 				}
 			}
-			// if (e.options.cursorStyle !== 1) {
-				await ifVimOn();
-			// }
+			// // if (e.options.cursorStyle !== 1) {
+			// await ifVimOn();
+			// // }
 			try {
 				setCursor(await obtainIM());
 			} catch (err) {
@@ -225,6 +225,18 @@ export async function activate(context: vscode.ExtensionContext) {
 		if (e.affectsConfiguration("ime-and-cursor")) {
 			getConfiguration();
 			// console.log('getConfiguration');
+		}
+	}));
+
+
+	context.subscriptions.push(vscode.window.onDidChangeTextEditorOptions(async (e: vscode.TextEditorOptionsChangeEvent) => {
+		console.log(e.options.cursorStyle);
+		if (/*useWithVim &&*/ ccEnable && !csEnable) {
+			try {
+				setCursor(await obtainIM());
+			} catch (err) {
+				// out.error(`${err}`);
+			}
 		}
 	}));
 }
