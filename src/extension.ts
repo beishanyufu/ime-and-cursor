@@ -25,6 +25,7 @@ let ChineseIM: string;
 let obtainIMCmd: string;
 let switchIMCmd: string;
 let useWithVim: boolean;
+let helpVim: boolean;
 
 let didCSEnableOnceTurnOff = false;
 
@@ -97,6 +98,7 @@ function getConfiguration() {
 		switchIMCmd = defaultSwitchIMCmd;
 	}
 	useWithVim = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("useWithVim") as boolean;
+	helpVim = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("helpVim") as boolean;
 }
 
 function execCmd(cmd: string): Promise<string> {
@@ -230,9 +232,12 @@ export async function activate(context: vscode.ExtensionContext) {
 
 
 	context.subscriptions.push(vscode.window.onDidChangeTextEditorOptions(async (e: vscode.TextEditorOptionsChangeEvent) => {
-		console.log(e.options.cursorStyle);
+		// console.log(e.options.cursorStyle);
 		if (/*useWithVim &&*/ ccEnable && !csEnable) {
 			try {
+				if (helpVim && e.options.cursorStyle === 2 && await obtainIM() === ChineseIM) {
+					await switchIM(ChineseIM);
+				}
 				setCursor(await obtainIM());
 			} catch (err) {
 				// out.error(`${err}`);

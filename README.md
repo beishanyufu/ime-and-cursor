@@ -5,7 +5,7 @@
 
 **光标和输入法**（**IME and Cursor**）是为[VSCode](https://code.visualstudio.com/)编写的一个小插件。它的功能和原理非常简单，就是通过适时获取当前输入语言，来相应地设置光标样式（默认英文输入状态对应普通的竖线型光标，中文输入状态对应方块型光标，可设置）或光标颜色（默认未开启，可设置）。
 
-安装本插件后，为了能够及时响应输入语言的改变，需要您在使用vscode的过程中，使用本插件提供的快捷键（默认为`shift+space`，可设置）而不是系统层面的快捷键（如`shift+alt`）来进行输入语言的切换。
+安装本插件后，为了能够及时响应输入语言的改变，需要您在使用VSCode的过程中，使用本插件提供的快捷键来进行输入语言的切换（默认快捷键为`shift+space`，可设置。想实现单击 `Shift`键切换输入语言比较困难，具体方法请参考下面的补充说明四）。
 
 因为涉及到与系统的交互，本插件并不能保证“开箱即用”，很可能还需要您做一点额外工作。下面分系统加以说明。
 
@@ -82,6 +82,16 @@ Linux有许多命令行工具可以获取输入法的key和切换输入法，如
 "ime-and-cursor.cursorColor.enable": true,
 "ime-and-cursor.useWithVim": true,
 ```
+如需本插件帮忙在Vim进入Normal模式时将输入语言自动切换为英文，那就再多加一项设置：
+```json
+"ime-and-cursor.helpVim": true,
+```
+
+ ## 补充说明四：
+ 因为VSCode不直接向插件开放键盘事件，插件仅能定义快捷键，而单独的shift、ctrl等修饰键又不能定义为合法的VSCode快捷键，所以本插件才退而求其次，将`Shift+Space`这个比较舒服的按键组合定义为了默认的语言切换键。
+
+ 如果您想继续使用输入法常用的shift键来切换输入语言，也不是完全没有办法，比如通过使用开源软件AutoHotkey。[这里](https://zhuanlan.zhihu.com/p/655293031)是我编辑的一小段AutoHotkey脚本，可用来将VSCode窗口下的单击shift键操作转为`Shift+Space`，从而间接实现用shift键切换输入语言。不想麻烦安装AutoHotkey的用户，也可以下载我使用AutoHotkey官方工具Ahk2Exe制作的独立小程序（已上传至[本插件的github仓库](https://github.com/beishanyufu/ime-and-cursor)）。
+
 ---
 ## 最后
 本插件的想法源于我以前玩Smalltalk时给Pharo做的内置输入法；技术实现则参考和借助了[VSCodeVim](https://github.com/VSCodeVim/Vim)和[im-select](https://github.com/daipeihust/im-select)，特此致谢！！

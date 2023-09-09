@@ -3,7 +3,7 @@
   "displayName": "IME and Cursor",
   "description": "令光标兼作中英文输入状态的指示器",
   "icon": "images/icon.png",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "publisher": "beishanyufu",
   "license": "MIT",
   "keywords": [
@@ -123,6 +123,12 @@
           "type":"boolean",
           "default":false,
           "description": "【和Vim插件一起使用】"
+        },
+        "ime-and-cursor.helpVim": {
+          "order": 11,
+          "type":"boolean",
+          "default":false,
+          "description": "【当Vim进入Normal模式时，帮助将输入语言自动切换为英语】"
         }
       }
     }
