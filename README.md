@@ -90,7 +90,7 @@ Linux有许多命令行工具可以获取输入法的key和切换输入法，如
  ## 补充说明四：
  因为VSCode不直接向插件开放键盘事件，插件仅能定义快捷键，而单独的shift、ctrl等修饰键又不能定义为合法的VSCode快捷键，所以本插件才退而求其次，将`Shift+Space`这个比较舒服的按键组合定义为了默认的语言切换键。
 
- 如果您想继续使用输入法常用的shift键来切换输入语言，也不是完全没有办法，比如通过使用开源软件AutoHotkey。[这里](https://zhuanlan.zhihu.com/p/655293031)是我编辑的一小段AutoHotkey脚本，可用来将VSCode窗口下的单击shift键操作转为`Shift+Space`，从而间接实现用shift键切换输入语言。不想麻烦安装AutoHotkey的用户，也可以下载我使用AutoHotkey官方工具Ahk2Exe制作的独立小程序（已上传至[本插件的github仓库](https://github.com/beishanyufu/ime-and-cursor)）。
+ 如果您想继续使用输入法常用的shift键来切换输入语言，也不是完全没有办法，比如通过使用开源软件AutoHotkey。[这里](https://zhuanlan.zhihu.com/p/655293031)是我编辑的一小段AutoHotkey脚本，可用来将VSCode窗口下的单击shift键操作转为`Shift+Space`，从而间接实现用shift键切换输入语言。不想麻烦安装AutoHotkey的用户，也可以到[本插件的github仓库](https://github.com/beishanyufu/ime-and-cursor/releases/tag/v1.2.0)下载我使用AutoHotkey制作的独立小工具。
 
 ---
 ## 最后
