@@ -3,7 +3,7 @@
   "displayName": "IME and Cursor",
   "description": "令光标兼作中英文输入状态的指示器",
   "icon": "images/icon.png",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "publisher": "beishanyufu",
   "license": "MIT",
   "keywords": [

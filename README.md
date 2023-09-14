@@ -93,5 +93,7 @@ Linux有许多命令行工具可以获取输入法的key和切换输入法，如
  如果您想继续使用输入法常用的shift键来切换输入语言，也不是完全没有办法，比如通过使用开源软件AutoHotkey。[这里](https://zhuanlan.zhihu.com/p/655293031)是我编辑的一小段AutoHotkey脚本，可用来将VSCode窗口下的单击shift键操作转为`Shift+Space`，从而间接实现用shift键切换输入语言。不想麻烦安装AutoHotkey的用户，也可以到[本插件的github仓库](https://github.com/beishanyufu/ime-and-cursor/releases/tag/v1.2.0)下载我使用AutoHotkey制作的独立小工具。
 
 ---
-## 最后
+## 源起 · 致谢 · 关于我
 本插件的想法源于我以前玩Smalltalk时给Pharo做的内置输入法；技术实现则参考和借助了[VSCodeVim](https://github.com/VSCodeVim/Vim)和[im-select](https://github.com/daipeihust/im-select)，特此致谢！！
+
+作者北山愚夫，愚不可及的『[愚公和鲁班](https://github.com/beishanyufu/yugongheluban#readme)』项目发起人。热爱开源，崇尚共享，致力于将数字领域的开源共享模式引入现实世界。
