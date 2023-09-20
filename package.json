@@ -3,7 +3,7 @@
   "displayName": "IME and Cursor",
   "description": "令光标兼作中英文输入状态的指示器",
   "icon": "images/icon.png",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "publisher": "beishanyufu",
   "license": "MIT",
   "keywords": [
@@ -13,7 +13,7 @@
     "光标",
     "cursor",
     "keyboard",
-    "chinese",
+    "Chinese",
     "input method",
     "中文",
     "中文编程"
@@ -97,7 +97,7 @@
         "ime-and-cursor.cursorStyle.Chinese": {
           "order": 6,
           "type":"string",
-          "default": "Block",
+          "default": "Underline",
           "enum":["Line","Block","Underline","LineThin","BlockOutline","UnderlineThin"],
           "description": "中文输入状态下的光标样式"
         },

@@ -3,9 +3,9 @@
 
 > “要盲打，不要盲切盲输（切换输入法和输入中英文）。让打字时视觉的自然焦点——光标，告诉你当前的输入语言是英文还是中文。”
 
-**光标和输入法**（**IME and Cursor**）是为[VSCode](https://code.visualstudio.com/)编写的一个小插件。它的功能和原理非常简单，就是通过适时获取当前输入语言，来相应地设置光标样式（默认英文输入状态对应普通的竖线型光标，中文输入状态对应方块型光标，可设置）或光标颜色（默认未开启，可设置）。
+**光标和输入法**（**IME and Cursor**）是为[VSCode](https://code.visualstudio.com/)编写的一个小插件。它的功能和原理非常简单，就是通过适时获取当前输入语言，来相应地设置光标样式（默认英文输入状态对应普通的竖线型光标，中文输入状态对应下划线型光标，可设置）或光标颜色（默认未开启，可设置）。
 
-安装本插件后，为了能够及时响应输入语言的改变，需要您在使用VSCode的过程中，使用本插件提供的快捷键来进行输入语言的切换（默认快捷键为`shift+space`，可设置。想实现单击 `Shift`键切换输入语言比较困难，具体方法请参考下面的[补充说明四](#additional-remarks-4)）。
+安装本插件后，为了能够及时响应输入语言的改变，需要您在使用VSCode的过程中，使用本插件提供的快捷键来进行输入语言的切换（默认快捷键为`shift+space`，可设置。而要实现通过单击`Shift`键切换输入语言则比较困难，具体方法请参考下面的[补充说明四](#additional-remarks-4)）。
 
 因为涉及到与系统的交互，本插件并不能保证“开箱即用”，很可能还需要您做一点额外工作。下面分系统加以说明。
 
@@ -88,7 +88,7 @@ Linux有许多命令行工具可以获取输入法的key和切换输入法，如
 ```
 <span id="additional-remarks-4"></span>
  ## 补充说明四：
- 因为VSCode不直接向插件开放键盘事件，插件仅能定义快捷键，而单独的shift、ctrl等修饰键又不能定义为合法的VSCode快捷键，所以本插件才退而求其次，将`Shift+Space`这个比较舒服的按键组合定义为了默认的语言切换键。
+ 因为VSCode不直接向插件开放键盘事件，插件仅能定义快捷键，而单独的shift、ctrl等修饰键又不能定义为合法的VSCode快捷键，所以本插件才退而求其次，将`Shift+Space`这个还算舒服的按键组合定义为了默认的语言切换键。
 
  如果您想继续使用输入法常用的shift键来切换输入语言，也不是完全没有办法，比如通过使用开源软件AutoHotkey。[这里](https://zhuanlan.zhihu.com/p/655293031)是我编辑的一小段AutoHotkey脚本，可用来将VSCode窗口下的单击shift键操作转为`Shift+Space`，从而间接实现用shift键切换输入语言。不想麻烦安装AutoHotkey的用户，也可以到[本插件的github仓库](https://github.com/beishanyufu/ime-and-cursor/releases/tag/v1.2.0)下载我使用AutoHotkey制作的独立小工具。
 
@@ -96,4 +96,4 @@ Linux有许多命令行工具可以获取输入法的key和切换输入法，如
 ## 源起 · 致谢 · 关于我
 本插件的想法源于我以前玩Smalltalk时给Pharo做的内置输入法；技术实现则参考和借助了[VSCodeVim](https://github.com/VSCodeVim/Vim)和[im-select](https://github.com/daipeihust/im-select)，特此致谢！！
 
-作者北山愚夫，愚不可及的『[愚公和鲁班](https://github.com/beishanyufu/yugongheluban#readme)』项目发起人。热爱开源，崇尚共享，致力于将数字领域的开源共享模式引入现实世界。
+作者[北山愚夫](https://beishanyufu.github.io/)，『愚公和鲁班』项目发起人，热爱开源，崇尚共享，致力于将数字领域的开源共享模式引入现实世界。
