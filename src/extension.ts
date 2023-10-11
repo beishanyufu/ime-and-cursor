@@ -164,7 +164,16 @@ function setCursor(currentIM: string) {
 	}
 }
 
-export async function activate(context: vscode.ExtensionContext) {
+async function switchAndSetCursor(currentIM: string) {
+	try {
+		await switchIM(currentIM);
+		setCursor(await obtainIM());
+	} catch (err) {
+		// out.error(`${err}`);
+	}
+}
+
+export function activate(context: vscode.ExtensionContext) {
 	// out.info("光标和输入法-ACTIVATE");
 	// console.log('ime-and-cursor activate');
 	defaultObtainIMCmd = context.asAbsolutePath('switcher/im-select.exe');
@@ -172,22 +181,25 @@ export async function activate(context: vscode.ExtensionContext) {
 	csEnable = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorStyle.enable") as boolean;
 	ccEnable = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("cursorColor.enable") as boolean;
 	getConfiguration();
-	try {
-		setCursor(await obtainIM());
-	} catch (err) {
-		// out.error(`${err}`);
-	}
 
-	context.subscriptions.push(vscode.commands.registerCommand('ime-and-cursor.switch', async () => {
-		// out.info("switch IM!");
-		try {
-			await switchIM(await obtainIM());
-			setCursor(await obtainIM());
-			// console.log("switch");
-		} catch (err) {
-			// out.error(`${err}`);
-		}
-	}));
+	// 修改为不使用 await
+	obtainIM().then((currentIM) => {
+		setCursor(currentIM);
+	}).catch((err) => {
+		// out.error(`${err}`);
+	});
+
+	// 提供给其他插件使用的 api
+	let api = {
+		getChineseIM: () => ChineseIM,
+		getEnglishIM: () => EnglishIM,
+		obtainIM,
+		switchToChineseIM: async () => await switchAndSetCursor(EnglishIM),
+		switchToEnglishIM: async () => await switchAndSetCursor(ChineseIM),
+		switch: async () => await switchAndSetCursor(await obtainIM()),
+	};
+
+	context.subscriptions.push(vscode.commands.registerCommand('ime-and-cursor.switch', api.switch));
 
 	context.subscriptions.push(vscode.window.onDidChangeWindowState(async (e: vscode.WindowState) => {
 		if (e.focused) {
@@ -244,6 +256,8 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 		}
 	}));
+
+	return api;
 }
 
 export async function deactivate(context: vscode.ExtensionContext) {
