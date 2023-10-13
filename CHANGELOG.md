@@ -1,5 +1,16 @@
 # Change Log
 
+## v1.3.0   2023-10-12
+- 导出 api 给其他插件：
+ ```
+getChineseIM(): string // 获取中文输入法的ID
+getEnglishIM(): string // 获取英文输入法的ID
+async obtainIM(): string // 获取当前输入法的ID
+async switchToChineseIM() // 切换到中文输入法
+async switchToEnglishIM() // 切换到英文输入法
+async switch() // 切换输入法
+```
+
 ## v1.2.0   2023-09-09
 - 添加对Vim插件的支持，可帮助Vim在转入Normal模式时自动将输入语言切换为英语
 - 提供一种单独使用shift键切换输入语言的方案
