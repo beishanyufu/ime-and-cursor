@@ -96,4 +96,6 @@ Linux有许多命令行工具可以获取输入法的key和切换输入法，如
 ## 源起 · 致谢 · 关于我
 本插件的想法源于我以前玩Smalltalk时给Pharo做的内置输入法；技术实现则参考和借助了[VSCodeVim](https://github.com/VSCodeVim/Vim)和[im-select](https://github.com/daipeihust/im-select)，特此致谢！！
 
-作者[北山愚夫](https://beishanyufu.github.io/)，『愚公和鲁班』项目发起人，热爱开源，崇尚共享，致力于将数字领域的开源共享模式引入现实世界。
+作者[北山愚夫](https://beishanyufu.github.io/)，『愚公和鲁班』项目发起人，热爱开源，崇尚共享，致力于将数字世界的共创共享模式引入现实世界，开创一个全民无条件分红的新时代。
+
+另：最近仿写了一首歌——[《咱们码农有力量》](https://github.com/beishanyufu/We-Coders-Have-The-Power)。欢迎感兴趣的朋友到我的仓库（[https://github.com/beishanyufu/We-Coders-Have-The-Power](https://github.com/beishanyufu/We-Coders-Have-The-Power)）中去看看或者参与创作。
