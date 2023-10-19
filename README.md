@@ -14,7 +14,7 @@
     -   [Linux 系统](#linux)
 -   [⚡ 补充说明](#additional-remarks)
 -   [❤️ 源起 · 致谢 · 关于我](#aboutme)
--   [✊ 咱们码农有力量](#song)
+-   [🥚 篇尾彩蛋](#song)
 
 <span id="settings"></span>
 ## 配置方法
@@ -107,7 +107,7 @@ Linux 有许多命令行工具可以获取输入法的 key 和切换输入法，
 ---
 <span id="aboutme"></span>
 ## 源起 · 致谢 · 关于我
-本插件的想法源于我以前玩 Smalltalk 时给 Pharo 做的内置输入法；技术实现则参考和借助了 [VSCodeVim](https://github.com/VSCodeVim/Vim) 和 [im-select](https://github.com/daipeihust/im-select)，特此致谢！！
+本插件的想法源于我以前玩 Smalltalk 时给 Pharo 做的内置输入法（如有需要可通过 issue 告知，我会把镜像文件传到 github上）；技术实现则参考和借助了 [VSCodeVim](https://github.com/VSCodeVim/Vim) 和 [im-select](https://github.com/daipeihust/im-select)，特此致谢！！
 
 作者[北山愚夫](https://beishanyufu.github.io/)，『愚公和鲁班』项目发起人，热爱开源，崇尚共享，致力于将数字世界的共创共享模式引入现实世界，开启一个全民无条件分红的新时代。
 <span id="song"></span>
@@ -115,4 +115,4 @@ Linux 有许多命令行工具可以获取输入法的 key 和切换输入法，
 ## 篇尾彩蛋😝
 程序员节快到了，我仿写了一首歌——[《咱们码农有力量》✊](https://github.com/beishanyufu/We-Coders-Have-The-Power)。欢迎伙伴们到我的仓库（[https://github.com/beishanyufu/We-Coders-Have-The-Power](https://github.com/beishanyufu/We-Coders-Have-The-Power)）中去看看或参与创作。
 
-另：基于本插件导出的api，有小伙伴开发了一款可根据上下文环境自动切换输入法的插件 [Smart IME](https://marketplace.visualstudio.com/items?itemName=OrangeX4.vscode-smart-ime)，在有较多中英文混输、需要频繁切换输入法的情况下很有帮助。
+另：基于本插件导出的 api，有小伙伴开发了一款可根据上下文环境自动切换输入法的插件 [Smart IME](https://marketplace.visualstudio.com/items?itemName=OrangeX4.vscode-smart-ime)，在有较多中英文混输、需要频繁切换输入法的情况下很有帮助。
