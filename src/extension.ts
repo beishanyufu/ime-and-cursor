@@ -148,7 +148,8 @@ function setCursor(currentIM: string) {
 				vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csEnglish] };
 			}
 			if (ccEnable) {
-				vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": ccEnglish }, vscode.ConfigurationTarget.Global);
+				let globalColorCustomizations = vscode.workspace.getConfiguration("workbench").inspect("colorCustomizations")?.globalValue as any;
+				vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { ...globalColorCustomizations, "editorCursor.foreground": ccEnglish, "terminalCursor.foreground": ccEnglish }, vscode.ConfigurationTarget.Global);
 			}
 			break;
 		case ChineseIM:
@@ -156,7 +157,8 @@ function setCursor(currentIM: string) {
 				vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csChinese] };
 			}
 			if (ccEnable) {
-				vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": ccChinese }, vscode.ConfigurationTarget.Global);
+				let globalColorCustomizations = vscode.workspace.getConfiguration("workbench").inspect("colorCustomizations")?.globalValue as any;
+				vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { ...globalColorCustomizations, "editorCursor.foreground": ccChinese, "terminalCursor.foreground": ccChinese }, vscode.ConfigurationTarget.Global);
 			}
 			break;
 		default:
