@@ -135,34 +135,28 @@ async function switchIM(currentIM: string) {
 	}
 }
 
-
 function setCursor(currentIM: string) {
-	if (!vscode.window.activeTextEditor) {
-		// out.info('setCursor:activeTextEditor === undefined');
-		return;
-	}
-	// out.info(`setCursor:${vscode.window.activeTextEditor.document.fileName}`);
+	let cs,cc;
 	switch (currentIM) {
 		case EnglishIM:
-			if (csEnable) {
-				vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csEnglish] };
-			}
-			if (ccEnable) {
-				let globalColorCustomizations = vscode.workspace.getConfiguration("workbench").inspect("colorCustomizations")?.globalValue as any;
-				vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { ...globalColorCustomizations, "editorCursor.foreground": ccEnglish, "terminalCursor.foreground": ccEnglish }, vscode.ConfigurationTarget.Global);
-			}
+			cs = csEnglish;
+			cc = ccEnglish;
 			break;
 		case ChineseIM:
-			if (csEnable) {
-				vscode.window.activeTextEditor.options = { cursorStyle: vscode.TextEditorCursorStyle[csChinese] };
-			}
-			if (ccEnable) {
-				let globalColorCustomizations = vscode.workspace.getConfiguration("workbench").inspect("colorCustomizations")?.globalValue as any;
-				vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { ...globalColorCustomizations, "editorCursor.foreground": ccChinese, "terminalCursor.foreground": ccChinese }, vscode.ConfigurationTarget.Global);
-			}
+			cs = csChinese;
+			cc = ccChinese;
 			break;
 		default:
 			vscode.window.showInformationMessage(`没有匹配的输入法key值（当前：${currentIM}），请检查是否正确设置了“EnglishIM”和“ChineseIM”。`);
+			return;
+	}
+	if(csEnable && vscode.window.activeTextEditor){
+		let ATEOptions = vscode.window.activeTextEditor.options;
+		vscode.window.activeTextEditor.options = { ...ATEOptions, cursorStyle: vscode.TextEditorCursorStyle[cs] };
+	}
+	if(ccEnable){
+		let globalColorCustomizations = vscode.workspace.getConfiguration("workbench").inspect("colorCustomizations")?.globalValue as any;
+		vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { ...globalColorCustomizations, "editorCursor.foreground": cc, "terminalCursor.foreground": cc }, vscode.ConfigurationTarget.Global);
 	}
 }
 
