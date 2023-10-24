@@ -3,7 +3,7 @@
 
 > “要盲打，不要盲切盲输（切换输入法和输入中英文）。让打字时视觉的自然焦点——光标，告诉你当前的输入语言是英文还是中文。”
 
-**光标和输入法**（**IME and Cursor**）是为 [VS Code](https://code.visualstudio.com/) 编写的一个小插件。它的功能和原理非常简单，就是通过适时获取当前输入语言，来相应地设置光标样式（默认英文输入状态对应普通的竖线型光标，中文输入状态对应下划线型光标，可设置）或光标颜色（默认未开启，可设置）。
+**光标和输入法**（**IME and Cursor**）是为 VS Code 编写的一个小插件。它的功能和原理非常简单，就是通过适时获取当前输入语言，来相应地设置光标颜色（默认中文输入状态下光标显示为红色，可设置）或光标样式（默认未开启，可设置）。
 
 安装本插件后，为了能够及时响应输入语言的改变，需要您在使用VSCode的过程中，使用本插件提供的快捷键来进行输入语言的切换（默认快捷键为 `shift+space`，可设置。而要实现通过单击 `Shift` 键切换输入语言则比较困难，具体方法请参考下面的[补充说明四](#additional-remarks-4)）。
 
@@ -53,7 +53,7 @@
 * `ime-and-cursor.ChineseIM`: 你的中文输入法的 key
 * `ime-and-cursor.EnglishIM`: 你的英文输入法的 key
 * `ime-and-cursor.obtainIMCmd`: 用于获取输入法的 key 的命令（需要使用绝对路径）
-* `ime-and-cursor.switchIMCmd`: 用于切换输入法的命令（需要使用绝对路径，且将 {im} 作为要切换的目标输入法的 key 的占位符）
+* `ime-and-cursor.switchIMCmd`: 用于切换输入法的命令（需要使用绝对路径，且将 “{im}” 作为要切换的目标输入法的 key 的占位符）
 
 下面是一个具体设置的参考样例：
 ```json
@@ -66,7 +66,7 @@
 <span id="linux"></span>
 ## Linux 系统：
 
-Linux 有许多命令行工具可以获取输入法的 key 和切换输入法，如 ibus，xkb-switch 等，可参考前面 Mac 系统的配置说明和[这里](https://github.com/daipeihust/im-select/blob/master/README_CN.md)进行操作。
+Linux 有许多命令行工具可以获取输入法的 key 和切换输入法，如 ibus，xkb-switch 等，可参考前面 Mac 系统的配置说明和[这里](https://github.com/daipeihust/im-select/blob/master/README_CN.md)进行配置操作。
 
 ---
 <span id="additional-remarks"></span>
@@ -113,6 +113,5 @@ Linux 有许多命令行工具可以获取输入法的 key 和切换输入法，
 <span id="song"></span>
 
 ## 篇尾彩蛋😝
-程序员节快到了，我仿写了一首歌——[《咱们码农有力量》✊](https://github.com/beishanyufu/We-Coders-Have-The-Power)。欢迎伙伴们到我的仓库（[https://github.com/beishanyufu/We-Coders-Have-The-Power](https://github.com/beishanyufu/We-Coders-Have-The-Power)）中去看看或参与创作。
 
-另：基于本插件导出的 api，有小伙伴开发了一款可根据上下文环境自动切换输入法的插件 [Smart IME](https://marketplace.visualstudio.com/items?itemName=OrangeX4.vscode-smart-ime)，在有较多中英文混输、需要频繁切换输入法的情况下很有帮助。
+基于本插件导出的 api，有小伙伴开发了一款可根据上下文环境自动切换输入法的插件 [Smart IME](https://marketplace.visualstudio.com/items?itemName=OrangeX4.vscode-smart-ime)，在有较多中英文混输、需要频繁切换输入法的情况下很有帮助。
