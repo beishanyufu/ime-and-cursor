@@ -29,6 +29,10 @@ let helpVim: boolean;
 
 let didCSEnableOnceTurnOff = false;
 
+let keepCheckingPrevious: number;
+let keepChecking: number = 0;
+let intervalID: any = 0;
+
 function isVimOn() {
 	let isvimon = false;
 	for (let ext of vscode.extensions.all) {
@@ -99,6 +103,22 @@ function getConfiguration() {
 	}
 	useWithVim = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("useWithVim") as boolean;
 	helpVim = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("helpVim") as boolean;
+	keepCheckingPrevious = keepChecking;
+	keepChecking = vscode.workspace.getConfiguration("ime-and-cursor").get<number>("keepChecking") as number;
+	if (keepChecking > 0 && keepChecking < 200) {
+		keepChecking = 200;
+	} else if (keepChecking > 5000) {
+		keepChecking = 5000;
+	}
+	if (keepChecking !== keepCheckingPrevious) {
+		if (intervalID) {
+			clearInterval(intervalID);
+			intervalID = 0;
+		}
+		if (keepChecking) {
+			intervalID = setInterval(async () => setCursor(await obtainIM()), keepChecking);
+		}
+	}
 }
 
 function execCmd(cmd: string): Promise<string> {
@@ -152,11 +172,15 @@ function setCursor(currentIM: string) {
 	}
 	if(csEnable && vscode.window.activeTextEditor){
 		let ATEOptions = vscode.window.activeTextEditor.options;
-		vscode.window.activeTextEditor.options = { ...ATEOptions, cursorStyle: vscode.TextEditorCursorStyle[cs] };
+		if (ATEOptions.cursorStyle !== vscode.TextEditorCursorStyle[cs]) {
+			vscode.window.activeTextEditor.options = { ...ATEOptions, cursorStyle: vscode.TextEditorCursorStyle[cs] };
+		}
 	}
-	if(ccEnable){
+	if (ccEnable) {
 		let globalColorCustomizations = vscode.workspace.getConfiguration("workbench").inspect("colorCustomizations")?.globalValue as any;
-		vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { ...globalColorCustomizations, "editorCursor.foreground": cc, "terminalCursor.foreground": cc }, vscode.ConfigurationTarget.Global);
+		if (globalColorCustomizations['editorCursor.foreground'] !== cc) {
+			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { ...globalColorCustomizations, "editorCursor.foreground": cc, "terminalCursor.foreground": cc }, vscode.ConfigurationTarget.Global);
+		}
 	}
 }
 
@@ -258,5 +282,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 export async function deactivate(context: vscode.ExtensionContext) {
 	// out.info("光标和输入法-DEACTIVATE");
+	if (intervalID) {
+		clearInterval(intervalID);
+		intervalID = 0;
+	}
 	await vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": undefined }, vscode.ConfigurationTarget.Global);
 }
