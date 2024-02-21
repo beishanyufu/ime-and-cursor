@@ -35,7 +35,14 @@
 
 ### 安装第三方输入法切换工具并完成本插件的相关设置
 
-您可以使用任何能够获取输入法的 key 和使用 key 进行输入法切换的命令行工具。下面以 [im-select](https://github.com/daipeihust/im-select) 为例说明相关安装和配置工作：
+您可以使用任何能够获取输入法的 key 和使用 key 进行输入法切换的命令行工具。下面列举了几个常用的：
+
+* [im-select](https://github.com/daipeihust/im-select)
+* [macism](https://github.com/laishulu/macism/) 
+
+由于`im-select`在Mac系统上会存在[问题](https://github.com/daipeihust/im-select/issues/17)，请直接使用[macism](https://github.com/laishulu/macism/) 。
+
+下面以 [im-select](https://github.com/daipeihust/im-select) 为例说明相关安装和配置工作：
 #### 1. 安装 im-select（[安装说明](https://github.com/daipeihust/im-select/blob/master/README_CN.md)）
 #### 2. 分别获取中文和英文输入法的 key（可以简单理解为输入法的 ID）
 切换到英文输入法，并在终端中执行命令：
@@ -45,6 +52,7 @@
 返回值即为您的英文输入法的 key。
 
 以同样的方法获取您使用的中文输入法的 key。
+
 
 #### 3. 对本插件进行设置
 
