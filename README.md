@@ -35,15 +35,14 @@
 
 ### 安装第三方输入法切换工具并完成本插件的相关设置
 
-您可以使用任何能够获取输入法的 key 和使用 key 进行输入法切换的命令行工具。下面列举了几个常用的：
-
-* [im-select](https://github.com/daipeihust/im-select)
-* [macism](https://github.com/laishulu/macism/) 
-
-由于`im-select`在Mac系统上会存在[问题](https://github.com/daipeihust/im-select/issues/17)，请直接使用[macism](https://github.com/laishulu/macism/) 。
+您可以使用任何能够获取输入法的 key 和使用 key 进行输入法切换的命令行工具。
 
 下面以 [im-select](https://github.com/daipeihust/im-select) 为例说明相关安装和配置工作：
+
+【提示：鉴于`im-select`在 Mac 系统上使用可能会存在[问题](https://github.com/daipeihust/im-select/issues/17)，您可以考虑使用其他工具，如 [macism](https://github.com/laishulu/macism/) 】
+
 #### 1. 安装 im-select（[安装说明](https://github.com/daipeihust/im-select/blob/master/README_CN.md)）
+
 #### 2. 分别获取中文和英文输入法的 key（可以简单理解为输入法的 ID）
 切换到英文输入法，并在终端中执行命令：
 
@@ -52,7 +51,6 @@
 返回值即为您的英文输入法的 key。
 
 以同样的方法获取您使用的中文输入法的 key。
-
 
 #### 3. 对本插件进行设置
 
@@ -100,7 +98,6 @@ Linux 有许多命令行工具可以获取输入法的 key 和切换输入法，
 ```json
 "ime-and-cursor.cursorStyle.enable": false,
 "ime-and-cursor.cursorColor.enable": true,
-"ime-and-cursor.useWithVim": true,
 ```
 如需本插件帮忙在 Vim 进入 Normal 模式时将输入语言自动切换为英文，那就再多加一项设置：
 ```json

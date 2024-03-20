@@ -24,7 +24,6 @@ let EnglishIM: string;
 let ChineseIM: string;
 let obtainIMCmd: string;
 let switchIMCmd: string;
-let useWithVim: boolean;
 let helpVim: boolean;
 
 let didCSEnableOnceTurnOff = false;
@@ -44,20 +43,6 @@ function isVimOn() {
 	}
 	return isvimon;
 }
-
-// async function ifVimOn() {
-// 	if (!useWithVim) {
-// 		return;
-// 	}
-// 	if (ccEnable && !csEnable && isVimOn()) {
-// 		try {
-// 			await switchIM(ChineseIM);
-// 			// console.log("switch on vim");
-// 		} catch (err) {
-// 			// out.error(`${err}`);
-// 		}
-// 	}
-// }
 
 function getConfiguration() {
 	// out.info('get configuration.');
@@ -101,7 +86,6 @@ function getConfiguration() {
 	if (switchIMCmd === '/path/to/im-select {im}' || !switchIMCmd) {
 		switchIMCmd = defaultSwitchIMCmd;
 	}
-	useWithVim = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("useWithVim") as boolean;
 	helpVim = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("helpVim") as boolean;
 	keepCheckingPrevious = keepChecking;
 	keepChecking = vscode.workspace.getConfiguration("ime-and-cursor").get<number>("keepChecking") as number;
@@ -243,9 +227,6 @@ export function activate(context: vscode.ExtensionContext) {
 					// console.log('reset active text editor cursor style');
 				}
 			}
-			// // if (e.options.cursorStyle !== 1) {
-			// await ifVimOn();
-			// // }
 			try {
 				setCursor(await obtainIM());
 			} catch (err) {

@@ -122,12 +122,6 @@
           "default": "#FF0000",
           "description": "中文输入状态下的光标十六进制颜色(格式：#RGB、#RGBA、#RRGGBB 或 #RRGGBBAA)"
         },
-        "ime-and-cursor.useWithVim": {
-          "order": 10,
-          "type":"boolean",
-          "default":false,
-          "description": "【和Vim插件一起使用】"
-        },
         "ime-and-cursor.helpVim": {
           "order": 11,
           "type":"boolean",
