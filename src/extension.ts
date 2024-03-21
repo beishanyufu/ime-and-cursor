@@ -32,6 +32,9 @@ let keepCheckingPrevious: number;
 let keepChecking: number = 0;
 let intervalID: any = 0;
 
+let connectYanziIME: boolean;
+let currentMode: string;
+
 function isVimOn() {
 	let isvimon = false;
 	for (let ext of vscode.extensions.all) {
@@ -103,6 +106,14 @@ function getConfiguration() {
 			intervalID = setInterval(async () => setCursor(await obtainIM()), keepChecking);
 		}
 	}
+	connectYanziIME = vscode.workspace.getConfiguration("ime-and-cursor").get<boolean>("connectYanziIME") as boolean;
+	if(connectYanziIME){
+		currentMode=EnglishIM;
+		tellYzSwitch("0");
+		setCursor(EnglishIM);
+	} else {
+		switchAndSetCursor(currentMode===EnglishIM?ChineseIM:EnglishIM);
+	}
 }
 
 function execCmd(cmd: string): Promise<string> {
@@ -118,6 +129,9 @@ function execCmd(cmd: string): Promise<string> {
 }
 
 async function obtainIM() {
+	if(connectYanziIME){
+		return currentMode;
+	}
 	try {
 		let IM = await execCmd(obtainIMCmd);
 		// console.log(IM.trim());
@@ -169,12 +183,21 @@ function setCursor(currentIM: string) {
 }
 
 async function switchAndSetCursor(currentIM: string) {
+    if(connectYanziIME){
+		tellYzSwitch(currentIM===EnglishIM?"1":"0");
+		return;
+	}
 	try {
 		await switchIM(currentIM);
 		setCursor(await obtainIM());
 	} catch (err) {
 		// out.error(`${err}`);
 	}
+}
+
+async function tellYzSwitch(to:"0"|"1"){
+	const clipCopy = await vscode.env.clipboard.readText();
+	await vscode.env.clipboard.writeText(clipCopy+'Ime&Cursor:PleaseSwitchTo'+to);
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -204,11 +227,29 @@ export function activate(context: vscode.ExtensionContext) {
 	};
 
 	context.subscriptions.push(vscode.commands.registerCommand('ime-and-cursor.switch', api.switch));
+	context.subscriptions.push(vscode.commands.registerCommand('ime-and-cursor.switchCursor2Ch', ()=>{
+		if(connectYanziIME){
+			setCursor(ChineseIM);
+			currentMode=ChineseIM;
+		}
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('ime-and-cursor.switchCursor2En', ()=>{
+		if(connectYanziIME){
+			setCursor(EnglishIM);
+			currentMode=EnglishIM;
+		}
+	}));
+	context.subscriptions.push(vscode.commands.registerCommand('ime-and-cursor.tellYz2En',api.switchToEnglishIM)); // ()=>tellYzSwitch('0')));
+	context.subscriptions.push(vscode.commands.registerCommand('ime-and-cursor.tellYz2Ch',api.switchToChineseIM)); // ()=>tellYzSwitch('1')));
 
 	context.subscriptions.push(vscode.window.onDidChangeWindowState(async (e: vscode.WindowState) => {
 		if (e.focused) {
 			// out.info("window focused!");
 			// await ifVimOn();
+			if(connectYanziIME){
+				// tellYzSwitch(currentMode===EnglishIM?"0":"1");
+				return; // 此处完全交由燕子处理
+			}
 			try {
 				setCursor(await obtainIM());
 			} catch (err) {

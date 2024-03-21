@@ -3,7 +3,7 @@
   "displayName": "IME and Cursor",
   "description": "令光标兼作中英文输入状态的指示器",
   "icon": "images/icon.png",
-  "version": "1.3.6",
+  "version": "1.4.0",
   "publisher": "beishanyufu",
   "license": "MIT",
   "extensionKind": [
@@ -45,12 +45,36 @@
       {
         "command": "ime-and-cursor.switch",
         "title": "切换输入法-中/英"
+      },
+      {
+        "command": "ime-and-cursor.switchCursor2En",
+        "title": "切换光标到英文"
+      },
+      {
+        "command": "ime-and-cursor.switchCursor2Ch",
+        "title": "切换光标到中文"
+      },
+      {
+        "command": "ime-and-cursor.tellYz2En",
+        "title": "通知燕子切换到英文"
+      },
+      {
+        "command": "ime-and-cursor.tellYz2Ch",
+        "title": "通知燕子切换到中文"
       }
     ],
     "keybindings":[
       {
         "command": "ime-and-cursor.switch",
         "key": "shift+space"
+      },
+      {
+        "command": "ime-and-cursor.switchCursor2En",
+        "key": "shift+win+alt+e"
+      },
+      {
+        "command": "ime-and-cursor.switchCursor2Ch",
+        "key": "shift+win+alt+c"
       }
     ],
     "configuration":{
@@ -133,6 +157,12 @@
           "type":"integer",
           "default": 0,
           "description": "循环检测输入法（请填入一个整数：0 表示关闭此功能；200-5000 表示间隔毫秒数）。此功能可能比较耗电，请根据个人需要和电脑环境慎重启用！"
+        },
+        "ime-and-cursor.connectYanziIME": {
+          "order": 13,
+          "type":"boolean",
+          "default":false ,
+          "description": "【连接燕子输入法】"
         }
       }
     }

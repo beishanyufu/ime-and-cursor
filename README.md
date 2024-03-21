@@ -1,11 +1,11 @@
 <h1 align="center">光标和输入法（IME and Cursor）</h1>
 <p align="center"><strong>令光标兼作中英文输入状态的指示器</strong></p>
 
-> “要盲打，不要盲切盲输（切换输入法和输入中英文）。让打字时视觉的自然焦点——光标，告诉你当前的输入语言是英文还是中文。”
+> “让打字时视觉的自然焦点——光标，告诉你当前的输入语言是英文还是中文。”
 
 **光标和输入法**（**IME and Cursor**）是为 VS Code 编写的一个小插件。它的功能和原理非常简单，就是通过适时获取当前输入语言，来相应地设置光标颜色（默认中文输入状态下光标显示为红色，可设置）或光标样式（默认未开启，可设置）。
 
-安装本插件后，为了能够及时响应输入语言的改变，需要您在使用VSCode的过程中，使用本插件提供的快捷键来进行输入语言的切换（默认快捷键为 `shift+space`，可设置。而要实现通过单击 `Shift` 键切换输入语言则比较困难，具体方法请参考下面的[补充说明四](#additional-remarks-4)）。
+安装本插件后，为了能够及时响应输入语言的改变，需要您在使用VSCode的过程中，使用本插件提供的快捷键来进行输入语言的切换（默认快捷键为 `shift+space`，可设置！而要实现通过单击 `Shift` 键切换输入语言则比较困难，具体方法请参考下面的[补充说明四](#additional-remarks-4)）。这里有个特例就是[燕子输入法](https://github.com/beishanyufu/Yanzi-IME)，因为它可以与本插件直接进行双向通信。
 
 <strong>目录</strong>
 -   [🔧 各系统下的配置方法](#settings)
@@ -21,6 +21,7 @@
 因为涉及到与系统的交互，本插件并不能保证“开箱即用”，很可能还需要您做一点额外工作。下面分系统加以说明。
 <span id="windows"></span>
 ## Windows 系统：
+【提示：[燕子输入法](https://github.com/beishanyufu/Yanzi-IME)用户只需把本插件的设置项“Connect Yanzi IME”勾选上即可】
 ### 安装英语语言包
 如果您的 Windows 系统未安装英语语言包（大概率，因为新近的 Windows 中文版不再默认安装），则需要您手动安装一下。具体操作为：
 
@@ -105,9 +106,9 @@ Linux 有许多命令行工具可以获取输入法的 key 和切换输入法，
 ```
 <span id="additional-remarks-4"></span>
  ## 补充说明四：
- 因为 VS Code 不直接向插件开放键盘事件，插件仅能定义快捷键，而单独的 shift、ctrl 等修饰键又不能定义为合法的 VS Code 快捷键，所以本插件才退而求其次，将 `Shift+Space` 这个还算舒服的按键组合定义为了默认的语言切换键。
+ 因为 VS Code 不直接向插件开放键盘事件，插件仅能定义快捷键，而单独的 shift、ctrl 等修饰键又不能定义为合法的 VS Code 快捷键，所以本插件才退而求其次，将 `Shift+Space` 这个还算舒服的按键组合定义为了默认的语言切换键——当然，你也可以通过设置改为其他合法的 VS Code 快捷键。
 
- 如果您想继续使用输入法常用的 shift 键来切换输入语言，也不是完全没有办法，比如通过使用开源软件 AutoHotkey。[这里](https://zhuanlan.zhihu.com/p/655293031)是我编辑的一小段 AutoHotkey 脚本，可用来将 VS Code 窗口下的单击 shift 键操作转为 `Shift+Space`，从而间接实现用 shift 键切换输入语言。不想麻烦安装 AutoHotkey 的用户，也可以到[本插件的github仓库](https://github.com/beishanyufu/ime-and-cursor/releases/tag/v1.2.0)下载我使用 AutoHotkey 制作的独立小工具。
+ 如果你想继续使用输入法常用的 shift 键来切换输入语言，也不是完全没有办法，比如通过使用开源软件 AutoHotkey。[这里](https://zhuanlan.zhihu.com/p/655293031)是我编辑的一小段 AutoHotkey 脚本，可用来将 VS Code 窗口下的单击 shift 键操作转为 `Shift+Space`，从而间接实现用 shift 键切换输入语言。不想麻烦安装 AutoHotkey 的用户，也可以到[本插件的github仓库](https://github.com/beishanyufu/ime-and-cursor/releases/tag/v1.3.1)下载我使用 AutoHotkey 制作的独立小工具。
 
 ---
 <span id="aboutme"></span>
