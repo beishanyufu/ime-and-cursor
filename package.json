@@ -161,7 +161,7 @@
         "ime-and-cursor.connectYanziIME": {
           "order": 13,
           "type":"boolean",
-          "default":false ,
+          "default":false,
           "description": "【连接燕子输入法】"
         }
       }
