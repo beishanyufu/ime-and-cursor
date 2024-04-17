@@ -62,7 +62,8 @@ function getConfiguration() {
 	if (ccEnableTemp !== ccEnable) {
 		ccEnable = ccEnableTemp;
 		if (!ccEnableTemp) {
-			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { "editorCursor.foreground": undefined }, vscode.ConfigurationTarget.Global);
+			let globalColorCustomizations = vscode.workspace.getConfiguration("workbench").inspect("colorCustomizations")?.globalValue as any;
+			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { ...globalColorCustomizations, "editorCursor.foreground": undefined, "terminalCursor.foreground": undefined }, vscode.ConfigurationTarget.Global);
 		}
 	}
 
