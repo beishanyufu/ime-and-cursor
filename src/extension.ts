@@ -165,6 +165,8 @@ function setCursor(currentIM: string) {
 			cs = csChinese;
 			cc = ccChinese;
 			break;
+		case "0":
+			return;
 		default:
 			vscode.window.showInformationMessage(`没有匹配的输入法key值（当前：${currentIM}），请检查是否正确设置了“EnglishIM”和“ChineseIM”。`);
 			return;
