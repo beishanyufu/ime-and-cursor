@@ -179,7 +179,7 @@ function setCursor(currentIM: string) {
 	}
 	if (ccEnable) {
 		let globalColorCustomizations = vscode.workspace.getConfiguration("workbench").inspect("colorCustomizations")?.globalValue as any;
-		if (globalColorCustomizations['editorCursor.foreground'] !== cc) {
+		if (!globalColorCustomizations || globalColorCustomizations['editorCursor.foreground'] !== cc) {
 			vscode.workspace.getConfiguration("workbench").update('colorCustomizations', { ...globalColorCustomizations, "editorCursor.foreground": cc, "terminalCursor.foreground": cc }, vscode.ConfigurationTarget.Global);
 		}
 	}
